@@ -9,11 +9,11 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    first_name = db.Column(db.String(120), nullable=False)
-    last_name = db.Column(db.String(120), nullable=False)
+    first_name = db.Column(db.String(120))
+    last_name = db.Column(db.String(120))
     password = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    birth_date = db.Column(db.DateTime, unique=False, nullable=False)
+    birth_date = db.Column(db.String, unique=False)
     gender = db.Column(db.Enum('male', 'female', 'other', name='varchar'))
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
@@ -181,7 +181,7 @@ class Advertisers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('User.id'))
     name = db.Column(db.String(100), nullable=False)
-    company = db.Column(db.String(100), nullable=True)
+    company = db.Column(db.String(100))
     user = relationship('User')
 
 

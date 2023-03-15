@@ -138,5 +138,196 @@ def delete_reader(reader_id):
 
     return jsonify({'message': 'Reader deleted successfully'}), 200
 
+@api.route('/keywords_favorites', methods=['GET'])
+def get_keywords_favorites():
+    try:
+        keywords_favorites = KeywordsFavorites.query.all()
+        return jsonify([k.serialize() for k in keywords_favorites]), 200
+    except:
+        return jsonify({'message': 'Error occurred while fetching keywords favorites.'}), 500
+
+@api.route('/keywords_favorites', methods=['POST'])
+def create_keywords_favorites():
+    try:
+        user_id = request.json['user_id']
+        keyword_id = request.json['keyword_id']
+        keywords_favorites = KeywordsFavorites(user_id=user_id, keyword_id=keyword_id)
+        db.session.add(keywords_favorites)
+        db.session.commit()
+        return jsonify(keywords_favorites.serialize()), 201
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred while creating keywords favorites.'}), 500
+
+@api.route('/keywords_favorites/<int:id>', methods=['PUT'])
+def update_keywords_favorites(id):
+    try:
+        keywords_favorites = KeywordsFavorites.query.filter_by(id=id).first()
+        if not keywords_favorites:
+            return jsonify({'message': 'KeywordsFavorites not found.'}), 404
+        if 'user_id' in request.json:
+            keywords_favorites.user_id = request.json['user_id']
+        if 'keyword_id' in request.json:
+            keywords_favorites.keyword_id = request.json['keyword_id']
+        db.session.commit()
+        return jsonify(keywords_favorites.serialize()), 200
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred while updating keywords favorites.'}), 500
+
+@api.route('/keywords_favorites/<int:id>', methods=['DELETE'])
+def delete_keywords_favorites(id):
+    try:
+        keywords_favorites = KeywordsFavorites.query.filter_by(id=id).first()
+        if not keywords_favorites:
+            return jsonify({'message': 'KeywordsFavorites not found.'}), 404
+        db.session.delete(keywords_favorites)
+        db.session.commit()
+        return jsonify({'message': 'KeywordsFavorites deleted successfully.'}), 200
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'Error occurred while deleting keywords favorites.'}), 500
+
+@api.route('/keyword/', methods=['GET'])
+def get_all_keywords():
+    keywords = Keyword.query.all()
+    return jsonify([keyword.serialize() for keyword in keywords])
+@api.route('/keyword/<int:keyword_id>', methods=['GET'])
+def get_keyword(keyword_id):
+    keyword = Keyword.query.get(keyword_id)
+    if keyword:
+        return jsonify(keyword.serialize())
+    else:
+        return jsonify({"error": "Keyword not found"}), 404
+@api.route('/keyword/', methods=['POST'])
+def create_keyword():
+    data = request.json
+    keyword = Keyword(keyword=data['keyword'], description=data['description'])
+    db.session.add(keyword)
+    db.session.commit()
+    return jsonify(keyword.serialize()), 201
+@api.route('/keyword/<int:keyword_id>', methods=['PUT'])
+def update_keyword(keyword_id):
+    keyword = Keyword.query.get(keyword_id)
+    if not keyword:
+        return jsonify({"error": "Keyword not found"}), 404
+    data = request.json
+    keyword.keyword = data['keyword']
+    keyword.description = data['description']
+    db.session.commit()
+    return jsonify(keyword.serialize())
+@api.route('/keyword/<int:keyword_id>', methods=['DELETE'])
+def delete_keyword(keyword_id):
+    keyword = Keyword.query.get(keyword_id)
+    if not keyword:
+        return jsonify({"error": "Keyword not found"}), 404
+    db.session.delete(keyword)
+    db.session.commit()
+    return jsonify({"message": "Keyword deleted successfully"})
+
+
+@api.route('/widgetfavorites', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def widgetfavorites():
+    if request.method == 'GET':
+        favorites = WidgetFavorites.query.all()
+        return jsonify([f.serialize() for f in favorites])
+    elif request.method == 'POST':
+        reader_id = request.json.get('reader_id')
+        widget_id = request.json.get('widget_id')
+        favorite = WidgetFavorites(reader_id=reader_id, widget_id=widget_id)
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 201
+    elif request.method == 'PUT':
+        lector_id = request.json.get('lector_id')
+        favorite = WidgetFavorites.query.filter_by(lector_id=lector_id).first()
+        if not favorite:
+            return jsonify({'error': 'Favorite not found'}), 404
+        reader_id = request.json.get('reader_id')
+        widget_id = request.json.get('widget_id')
+        favorite.reader_id = reader_id
+        favorite.widget_id = widget_id
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
+    elif request.method == 'DELETE':
+        lector_id = request.json.get('lector_id')
+        favorite = WidgetFavorites.query.filter_by(lector_id=lector_id).first()
+        if not favorite:
+            return jsonify({'error': 'Favorite not found'}), 404
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({'message': 'Favorite deleted'}), 200
+    else:
+        return jsonify({'error': 'Method not allowed'}), 405
+
+
+@api.route('/widgets', methods=['GET'])
+def get_widgets():
+    widgets = Widget.query.all()
+    return jsonify([widget.serialize() for widget in widgets]), 200
+# Get a specific widget by ID
+@api.route('/widgets/<int:id>', methods=['GET'])
+def get_widget(id):
+    widget = Widget.query.get(id)
+    if not widget:
+        return jsonify({'error': 'Widget not found'}), 404
+    return jsonify(widget.serialize()), 200
+
+@api.route('/widgets', methods=['POST'])
+def add_widget():
+    # Parse the JSON data from the request body
+    data = request.json
+    # Create a new instance of the Widget class using the parsed data
+    new_widget = Widgets(
+        name=data['name'],
+        source=data['source'],
+        url=data['url'],
+        description=data['description'],
+        type_widget=data['type_widget']
+    )
+    # Add the new widget to the database
+    db.session.add(new_widget)
+    db.session.commit()
+    # Serialize the new widget and return it in the response
+    serialized_widget = new_widget.serialize()
+    return jsonify(serialized_widget), 201
+
+# Update a widget by ID
+@api.route('/widgets/<int:id>', methods=['PUT'])
+def update_widget(id):
+    widget = Widget.query.get(id)
+    if not widget:
+        return jsonify({'error': 'Widget not found'}), 404
+    widget.name = request.json.get('name', widget.name)
+    widget.source = request.json.get('source', widget.source)
+    widget.url = request.json.get('url', widget.url)
+    widget.description = request.json.get('description', widget.description)
+    widget.type_widget = request.json.get('type_widget', widget.type_widget)
+    db.session.commit()
+    return jsonify(widget.serialize()), 200
+
+# Delete a widget by ID
+@api.route('/widgets/<int:id>', methods=['DELETE'])
+def delete_widget(id):
+    widget = Widget.query.get(id)
+    if not widget:
+        return jsonify({'error': 'Widget not found'}), 404
+    db.session.delete(widget)
+    db.session.commit()
+    return jsonify({'message': 'Widget deleted successfully'}), 200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

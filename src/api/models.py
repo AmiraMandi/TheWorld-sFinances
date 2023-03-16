@@ -194,3 +194,4 @@ class Advertisers(db.Model):
             "user_id": self.user_id,
             "name": self.name,
             "company": self.company}
+

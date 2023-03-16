@@ -9,12 +9,11 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_name = db.Column(db.String(120), unique=True, nullable=False)
-    user_first_name = db.Column(db.String(120), nullable=False)
-    user_last_name = db.Column(db.String(120), nullable=False)
+    first_name = db.Column(db.String(120))
+    last_name = db.Column(db.String(120))
     password = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    birth_date = db.Column(db.DateTime, unique=False, nullable=False)
+    birth_date = db.Column(db.String, unique=False)
     gender = db.Column(db.Enum('male', 'female', 'other', name='varchar'))
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
@@ -24,88 +23,83 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "user_name": self.user_name,
-            "user_first_name": self.user_first_name,
-            "user_last_name": self.user_last_name,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
             "email": self.email,
             "birth_date": self.birth_date,
             "gender": self.gender,
             "is_active": self.is_active}
 
 
-class Readers(db.Model):
-    __tablename__ = "Readers"
+class Reader(db.Model):
+    __tablename__ = "Reader"
     id = db.Column(db.Integer, primary_key=True)
-    id_user = db.Column(db.Integer, ForeignKey('User.id'))
-    user_name = db.Column(db.String(100), unique=False, nullable=False)
-    user_last_name = db.Column(db.String(100), unique=False, nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('User.id'))
     iduser = relationship('User')
        
     def __repr__(self):
-        return f'<Readers {self.id}>'
+        return f'<Reader {self.id}>'
 
     def serialize(self):
         return {
             "id": self.id,
-            "id_user": self.id_user,
-            "user_name": self.user_name,
-            "user_last_name": self.user_last_name}
+            "user_id": self.user_id}
 
 
 
 class KeywordsFavorites(db.Model):
     __tablename__ = "KeywordsFavorites"
     id = db.Column(db.Integer, primary_key=True)
-    id_user = db.Column(db.Integer, ForeignKey('Readers.id'))
-    id_keywords = db.Column(db.Integer, ForeignKey('Keywords.id'))
-    reader = relationship('Readers')
-    keywords = relationship('Keywords')
+    user_id = db.Column(db.Integer, ForeignKey('Reader.id'))
+    keyword_id = db.Column(db.Integer, ForeignKey('Keyword.id'))
+    reader = relationship('Reader')
+    keyword = relationship('Keyword')
 
     def __repr__(self):
-        return f'<KeywordsFavorites {self.id_user}>'
+        return f'<KeywordsFavorites {self.user_id}>'
 
     def serialize(self):
         return {
-            "id_user": self.id_user,
-            "id_keywords": self.id_keywords}
+            "user_id": self.user_id,
+            "keyword_id": self.keyword_id}
 
 
-class Keywords(db.Model):
-    __tablename__ = "Keywords"
+class Keyword(db.Model):
+    __tablename__ = "Keyword"
     id = db.Column(db.Integer, primary_key=True)
-    keywords = db.Column(db.String(120), unique=True, nullable=False)
+    keyword = db.Column(db.String(120), unique=True, nullable=False)
     description = db.Column(db.String(200), nullable=False)
 
     def __repr__(self):
-        return f'<Keywords {self.id}>'
+        return f'<Keyword {self.id}>'
 
     def serialize(self):
         return {
             "id": self.id,
-            "keywords": self.keywords,
+            "keyword": self.keyword,
             "description": self.description}
 
 
 class WidgetFavorites(db.Model):
     __tablename__ = "WidgetFavorites"
-    lector_id = db.Column(db.Integer, primary_key=True)
-    reader_id = db.Column(db.Integer, ForeignKey('Readers.id'))
-    widget_id = db.Column(db.Integer, ForeignKey('Widgets.id'))
-    reader = relationship('Readers')
-    widgets = relationship('Widgets')
+    id = db.Column(db.Integer, primary_key=True)
+    reader_id = db.Column(db.Integer, ForeignKey('Reader.id'))
+    widget_id = db.Column(db.Integer, ForeignKey('Widget.id'))
+    reader = relationship('Reader')
+    widget = relationship('Widget')
 
     def __repr__(self):
-        return f'<WidgetFavorites {self.lector.id}>'
+        return f'<WidgetFavorites {self.id}>'
 
     def serialize(self):
         return {
-            "lector_id": self.lector_id,
+            "id": self.id,
             "reader_id": self.reader_id,
             "widget_id": self.widget_id}
 
     
-class Widgets(db.Model):
-    __tablename__ = "Widgets"
+class Widget(db.Model):
+    __tablename__ = "Widget"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     source = db.Column(db.String(120), nullable=False)
@@ -114,7 +108,7 @@ class Widgets(db.Model):
     type_widget = db.Column(db.String(120), nullable=False)
 
     def __repr__(self):
-        return f'<Widgets {self.id}>'
+        return f'<Widget {self.id}>'
 
     def serialize(self):
         return {
@@ -129,17 +123,18 @@ class Widgets(db.Model):
 class News(db.Model):
     __tablename__ = "News"
     id = db.Column(db.Integer, primary_key=True)
-    new_id = db.Column(db.Integer)
     author = db.Column(db.String(100), nullable=False)
     title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(200), nullable=False)
-    url = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(2000), nullable=False)
+    url = db.Column(db.String(250), nullable=False)
     source = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(100), nullable=False)
     language = db.Column(db.String(100), nullable=False)
     country = db.Column(db.String(100), nullable=False)
     published = db.Column(db.DateTime, unique=False, nullable=False)
-    id_keywords = db.Column(db.String(100), unique=False, nullable=False)
+    keyword_id = db.Column(db.Integer, ForeignKey('Keyword.id'))
+    keyword = relationship('Keyword')
+
 
     def __repr__(self):
         return f'<News {self.id}>'
@@ -147,7 +142,6 @@ class News(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "new_id": self.new_id,
             "author": self.author,
             "title": self.title,
             "description": self.description,
@@ -156,19 +150,19 @@ class News(db.Model):
             "language": self.language,
             "country": self.country,
             "published": self.published,
-            "id_keywords": self.id_keywords}
+            "keyword_id": self.keyword_id}
 
 
 class NewsFavorites(db.Model):
     __tablename__ = "NewsFavorites"
     id = db.Column(db.Integer, primary_key=True)
     news_id = db.Column(db.Integer, ForeignKey('News.id'))
-    reader_id = db.Column(db.Integer, ForeignKey('Readers.id'))
-    news_title = db.Column(db.String(100), nullable=False)
+    reader_id = db.Column(db.Integer, ForeignKey('Reader.id'))
+    title = db.Column(db.String(100), nullable=False)
     author = db.Column(db.String(100), nullable=False)
-    favorite_new_source = db.Column(db.String(100), nullable=False)
+    source = db.Column(db.String(100), nullable=False)
     news = relationship('News')
-    readers = relationship('Readers')
+    reader = relationship('Reader')
 
     def __repr__(self):
         return f'<NewsFavorites {self.news_id}>'
@@ -177,9 +171,9 @@ class NewsFavorites(db.Model):
         return {
             "news_id": self.news_id,
             "reader_id": self.reader_id,
-            "news_title": self.news_title,
+            "title": self.title,
             "author": self.author,
-            "favorite_new_source": self.favorite_new_source}
+            "source": self.source}
 
 
 class Advertisers(db.Model):
@@ -187,7 +181,9 @@ class Advertisers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('User.id'))
     name = db.Column(db.String(100), nullable=False)
+    company = db.Column(db.String(100))
     user = relationship('User')
+
 
     def __repr__(self):
         return f'<Advertisers {self.id}>'
@@ -196,4 +192,5 @@ class Advertisers(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "name": self.name}
+            "name": self.name,
+            "company": self.company}

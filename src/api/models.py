@@ -9,12 +9,8 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    first_name = db.Column(db.String(120))
-    last_name = db.Column(db.String(120))
-    password = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    birth_date = db.Column(db.String, unique=False)
-    gender = db.Column(db.Enum('male', 'female', 'other', name='varchar'))
+    password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
@@ -23,11 +19,7 @@ class User(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
             "email": self.email,
-            "birth_date": self.birth_date,
-            "gender": self.gender,
             "is_active": self.is_active}
 
 
@@ -35,7 +27,11 @@ class Reader(db.Model):
     __tablename__ = "Reader"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('User.id'))
-    iduser = relationship('User')
+    first_name = db.Column(db.String(120))
+    last_name = db.Column(db.String(120))
+    birth_date = db.Column(db.String, unique=False)
+    gender = db.Column(db.Enum('male', 'female', 'other', name='varchar'))
+    user = relationship('User')
        
     def __repr__(self):
         return f'<Reader {self.id}>'
@@ -43,7 +39,11 @@ class Reader(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "user_id": self.user_id}
+            "user_id": self.user_id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "birth_date": self.birth_date,
+            "gender": self.gender,}
 
 
 

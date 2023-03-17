@@ -8,68 +8,52 @@ from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
 
-
+# USER ENDPONT
 @api.route('/users', methods=['GET'])
-def get_all_users():
+def get_users():
     users = User.query.all()
-    return jsonify([user.serialize() for user in users])
+    return jsonify([user.serialize() for user in users]), 200
 
-
-@api.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = User.query.filter_by(id=user_id).first()
+@api.route('/users/<int:id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get(id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
-    return jsonify(user.serialize())
-
+    return jsonify(user.serialize()), 200
 
 @api.route('/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
-    try:
-        user = User(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            password=data['password'],
-            email=data['email'],
-            birth_date=data['year, month, num_days'],
-            gender=data['gender'],
-            is_active=data['is_active']
-        )
-        db.session.add(user)
-        db.session.commit()
-        return jsonify({'message': 'User created successfully', 'user': user.serialize()}), 201
-    except KeyError as e:
-        return jsonify({'error': f'Missing field: {e}'}), 400
+    email = request.json.get('email')
+    password = request.json.get('password')
+    is_active = request.json.get('is_active')
+    user = User(email=email, password=password, is_active=is_active)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(user.serialize()), 201
 
-
-@api.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    user = User.query.filter_by(id=user_id).first()
+@api.route('/users/<int:id>', methods=['PUT'])
+def update_user(id):
+    user = User.query.get(id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
-    data = request.get_json()
-    try:
-        user.first_name = data.get('first_name', user.first_name)
-        user.last_name = data.get('last_name', user.last_name)
-        user.password = data.get('password', user.password)
-        user.email = data.get('email', user.email)
-        user.birth_date = datetime.strptime(data.get('birth_date', user.birth_date.isoformat()), '%Y-%m-%d')
-        user.gender = data.get('gender', user.gender)
-        user.is_active = data.get('is_active', user.is_active)
-        db.session.commit()
-        return jsonify({'message': 'User updated successfully', 'user': user.serialize()})
-    except KeyError as e:
-        return jsonify({'error': f'Missing field: {e}'}), 400
+    user.email = request.json.get('email', user.email)
+    user.password = request.json.get('password', user.password)
+    user.is_active = request.json.get('is_active', user.is_active)
+    db.session.commit()
+    return jsonify(user.serialize()), 200
 
-
-@api.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get_or_404(user_id)
+@api.route('/users/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
     db.session.delete(user)
     db.session.commit()
-    return jsonify({'message': 'User deleted successfully.'})
+    return '', 204
+#final End ponts Users 
 
+
+# EndPOINT READERS
 @api.route('/readers', methods=['GET'])
 def get_all_readers():
     readers = Reader.query.all()
@@ -84,48 +68,41 @@ def get_reader(reader_id):
 
     return jsonify(reader.serialize()), 200
 
-@api.route('/readers', methods=['POST'])
-def create_reader():
-    data = request.json
-    user_id = data.get('user_id')
-
-    if user_id is None:
-        return jsonify({'error': 'User ID is required'}), 400
-
-    user = User.query.filter_by(id=user_id).first()
-    if user is None:
-        return jsonify({'error': 'User not found'}), 404
-
-    reader = Reader(user_id=user_id)
+@api.route('/', methods=['POST'])
+def create():
+    data = request.get_json()
+    reader = Reader(
+        user_id=data.get('user_id'),
+        first_name=data.get('first_name'),
+        last_name=data.get('last_name'),
+        birth_date=data.get('birth_date'),
+        gender=data.get('gender')
+    )
     db.session.add(reader)
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        return jsonify({'error': 'Reader already exists'}), 409
+        return jsonify(error='The specified user does not exist.'), 400
+    return jsonify(reader.serialize())
+
 
     return jsonify(reader.serialize()), 201
 
-@api.route('/readers/<int:reader_id>', methods=['PUT'])
-def update_reader(reader_id):
-    data = request.json
-    user_id = data.get('user_id')
+@api.route('/<int:reader_id>', methods=['PUT'])
+def update(reader_id):
 
-    if user_id is None:
-        return jsonify({'error': 'User ID is required'}), 400
-
-    user = User.query.filter_by(id=user_id).first()
-    if user is None:
-        return jsonify({'error': 'User not found'}), 404
-
+    data = request.get_json()
     reader = Reader.query.get(reader_id)
     if reader is None:
-        return jsonify({'error': 'Reader not found'}), 404
-
-    reader.user_id = user_id
+        return jsonify(error=f'Reader with ID {reader_id} does not exist.'), 404
+    reader.user_id = data.get('user_id', reader.user_id)
+    reader.first_name = data.get('first_name', reader.first_name)
+    reader.last_name = data.get('last_name', reader.last_name)
+    reader.birth_date = data.get('birth_date', reader.birth_date)
+    reader.gender = data.get('gender', reader.gender)
     db.session.commit()
-
-    return jsonify(reader.serialize()), 200
+    return jsonify(reader.serialize()),200
 
 @api.route('/readers/<int:reader_id>', methods=['DELETE'])
 def delete_reader(reader_id):
@@ -138,6 +115,8 @@ def delete_reader(reader_id):
 
     return jsonify({'message': 'Reader deleted successfully'}), 200
 
+
+# ENDPPOINT KEYWORD_FAVORITES
 @api.route('/keywords_favorites', methods=['GET'])
 def get_keywords_favorites():
     try:
@@ -188,6 +167,8 @@ def delete_keywords_favorites(id):
         db.session.rollback()
         return jsonify({'message': 'Error occurred while deleting keywords favorites.'}), 500
 
+
+# ENDPOINT KEYWORD
 @api.route('/keyword/', methods=['GET'])
 def get_all_keywords():
     keywords = Keyword.query.all()
@@ -226,6 +207,7 @@ def delete_keyword(keyword_id):
     return jsonify({"message": "Keyword deleted successfully"})
 
 
+# ENDPOINT widgetfavorites
 @api.route('/widgetfavorites', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def widgetfavorites():
     if request.method == 'GET':
@@ -261,11 +243,12 @@ def widgetfavorites():
         return jsonify({'error': 'Method not allowed'}), 405
 
 
+# ENDPOINT WIDGETS
 @api.route('/widgets', methods=['GET'])
 def get_widgets():
     widgets = Widget.query.all()
     return jsonify([widget.serialize() for widget in widgets]), 200
-# Get a specific widget by ID
+
 @api.route('/widgets/<int:id>', methods=['GET'])
 def get_widget(id):
     widget = Widget.query.get(id)
@@ -275,9 +258,8 @@ def get_widget(id):
 
 @api.route('/widgets', methods=['POST'])
 def add_widget():
-    # Parse the JSON data from the request body
+    
     data = request.json
-    # Create a new instance of the Widget class using the parsed data
     new_widget = Widgets(
         name=data['name'],
         source=data['source'],
@@ -285,14 +267,13 @@ def add_widget():
         description=data['description'],
         type_widget=data['type_widget']
     )
-    # Add the new widget to the database
+    
     db.session.add(new_widget)
     db.session.commit()
-    # Serialize the new widget and return it in the response
     serialized_widget = new_widget.serialize()
     return jsonify(serialized_widget), 201
 
-# Update a widget by ID
+
 @api.route('/widgets/<int:id>', methods=['PUT'])
 def update_widget(id):
     widget = Widget.query.get(id)
@@ -306,13 +287,14 @@ def update_widget(id):
     db.session.commit()
     return jsonify(widget.serialize()), 200
 
-# get all news
+
+# ENDPOINT NEWS
 @api.route('/news', methods=['GET'])
 def get_all_news():
     all_news = News.query.all()
     return jsonify([news.serialize() for news in all_news])
 
-# get a specific news by id
+
 @api.route('/news/<int:news_id>', methods=['GET'])
 def get_news(news_id):
     news = News.query.get(news_id)
@@ -321,7 +303,7 @@ def get_news(news_id):
     else:
         return jsonify({"message": "News not found"}), 404
 
-# create a new news
+
 @api.route('/news', methods=['POST'])
 def create_news():
     author = request.json.get('author')
@@ -341,7 +323,7 @@ def create_news():
 
     return jsonify(news.serialize()), 201
 
-# update an existing news
+
 @api.route('/news/<int:news_id>', methods=['PUT'])
 def update_news(news_id):
     news = News.query.get(news_id)
@@ -374,7 +356,7 @@ def update_news(news_id):
 
     return jsonify(news.serialize())
 
-# delete a news
+
 @api.route('/news/<int:news_id>', methods=['DELETE'])
 def delete_news(news_id):
     news = News.query.get(news_id)
@@ -385,6 +367,8 @@ def delete_news(news_id):
     else:
         return jsonify({"message": "News not found"}), 404
 
+
+# ENDPOINT NEW FAVORITE
 @api.route('/news_favorites', methods=['GET'])
 def get_news_favorites():
     news_favorites = NewsFavorites.query.all()
@@ -432,48 +416,45 @@ def delete_news_favorite(id):
     else:
         return {"message": "NewsFavorite not found."}, 404 
 
+
+# ENDPOINT ADVERTISERS
 @api.route('/advertisers', methods=['GET'])
-def get_all_advertisers():
+def get_advertisers():
     advertisers = Advertisers.query.all()
-    return jsonify([advertiser.serialize() for advertiser in advertisers])
+    return jsonify([advertiser.serialize() for advertiser in advertisers]), 200
 
 @api.route('/advertisers/<int:id>', methods=['GET'])
-def get_advertiser_by_id(id):
-    advertiser = Advertisers.query.get_or_404(id)
-    return jsonify(advertiser.serialize())
+def get_advertiser(id):
+    advertiser = Advertisers.query.get(id)
+    if not advertiser:
+        return jsonify({'error': 'Advertiser not found'}), 404
+    return jsonify(advertiser.serialize()), 200
 
 @api.route('/advertisers', methods=['POST'])
 def create_advertiser():
-    data = request.get_json()
-    advertiser = Advertisers(
-        user_id=data['user_id'],
-        name=data['name'],
-        company=data['company']
-    )
+    user_id = request.json.get('user_id')
+    name = request.json.get('name')
+    company = request.json.get('company')
+    advertiser = Advertisers(user_id=user_id, name=name, company=company)
     db.session.add(advertiser)
     db.session.commit()
     return jsonify(advertiser.serialize()), 201
 
 @api.route('/advertisers/<int:id>', methods=['PUT'])
 def update_advertiser(id):
-    advertiser = Advertisers.query.get_or_404(id)
-    data = request.get_json()
-    advertiser.user_id = data['user_id']
-    advertiser.name = data['name']
-    advertiser.company = data['company']
+    advertiser = Advertisers.query.get(id)
+    if not advertiser:
+        return jsonify({'error': 'Advertiser not found'}), 404
+    advertiser.name = request.json.get('name', advertiser.name)
+    advertiser.company = request.json.get('company', advertiser.company)
     db.session.commit()
-    return jsonify(advertiser.serialize())
+    return jsonify(advertiser.serialize()), 200
 
 @api.route('/advertisers/<int:id>', methods=['DELETE'])
 def delete_advertiser(id):
-    advertiser = Advertisers.query.get_or_404(id)
+    advertiser = Advertisers.query.get(id)
+    if not advertiser:
+        return jsonify({'error': 'Advertiser not found'}), 404
     db.session.delete(advertiser)
     db.session.commit()
     return '', 204
-
-
-
-
-
-
-

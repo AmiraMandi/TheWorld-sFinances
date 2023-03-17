@@ -167,6 +167,8 @@ def delete_keywords_favorites(id):
         db.session.rollback()
         return jsonify({'message': 'Error occurred while deleting keywords favorites.'}), 500
 
+
+# ENDPOINT KEYWORD
 @api.route('/keyword/', methods=['GET'])
 def get_all_keywords():
     keywords = Keyword.query.all()
@@ -205,6 +207,7 @@ def delete_keyword(keyword_id):
     return jsonify({"message": "Keyword deleted successfully"})
 
 
+# ENDPOINT widgetfavorites
 @api.route('/widgetfavorites', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def widgetfavorites():
     if request.method == 'GET':
@@ -240,6 +243,7 @@ def widgetfavorites():
         return jsonify({'error': 'Method not allowed'}), 405
 
 
+# ENDPOINT WIDGETS
 @api.route('/widgets', methods=['GET'])
 def get_widgets():
     widgets = Widget.query.all()
@@ -284,6 +288,7 @@ def update_widget(id):
     return jsonify(widget.serialize()), 200
 
 
+# ENDPOINT NEWS
 @api.route('/news', methods=['GET'])
 def get_all_news():
     all_news = News.query.all()
@@ -362,6 +367,8 @@ def delete_news(news_id):
     else:
         return jsonify({"message": "News not found"}), 404
 
+
+# ENDPOINT NEW FAVORITE
 @api.route('/news_favorites', methods=['GET'])
 def get_news_favorites():
     news_favorites = NewsFavorites.query.all()
@@ -409,6 +416,8 @@ def delete_news_favorite(id):
     else:
         return {"message": "NewsFavorite not found."}, 404 
 
+
+# ENDPOINT ADVERTISERS
 @api.route('/advertisers', methods=['GET'])
 def get_advertisers():
     advertisers = Advertisers.query.all()
@@ -449,10 +458,3 @@ def delete_advertiser(id):
     db.session.delete(advertiser)
     db.session.commit()
     return '', 204
-
-
-
-
-
-
-

@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
+import json
 
 
 api = Blueprint('api', __name__)
@@ -41,6 +42,8 @@ def update_user(id):
     user.is_active = request.json.get('is_active', user.is_active)
     db.session.commit()
     return jsonify(user.serialize()), 200
+
+
 
 @api.route('/users/<int:id>', methods=['DELETE'])
 def delete_user(id):

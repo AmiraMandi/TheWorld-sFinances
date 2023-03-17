@@ -306,24 +306,170 @@ def update_widget(id):
     db.session.commit()
     return jsonify(widget.serialize()), 200
 
-# Delete a widget by ID
-@api.route('/widgets/<int:id>', methods=['DELETE'])
-def delete_widget(id):
-    widget = Widget.query.get(id)
-    if not widget:
-        return jsonify({'error': 'Widget not found'}), 404
-    db.session.delete(widget)
+# get all news
+@api.route('/news', methods=['GET'])
+def get_all_news():
+    all_news = News.query.all()
+    return jsonify([news.serialize() for news in all_news])
+
+# get a specific news by id
+@api.route('/news/<int:news_id>', methods=['GET'])
+def get_news(news_id):
+    news = News.query.get(news_id)
+    if news:
+        return jsonify(news.serialize())
+    else:
+        return jsonify({"message": "News not found"}), 404
+
+# create a new news
+@api.route('/news', methods=['POST'])
+def create_news():
+    author = request.json.get('author')
+    title = request.json.get('title')
+    description = request.json.get('description')
+    url = request.json.get('url')
+    source = request.json.get('source')
+    category = request.json.get('category')
+    language = request.json.get('language')
+    country = request.json.get('country')
+    published = request.json.get('published')
+    keyword_id = request.json.get('keyword_id')
+
+    news = News(author=author, title=title, description=description, url=url, source=source, category=category, language=language, country=country, published=published, keyword_id=keyword_id)
+    db.session.add(news)
     db.session.commit()
-    return jsonify({'message': 'Widget deleted successfully'}), 200
 
+    return jsonify(news.serialize()), 201
 
+# update an existing news
+@api.route('/news/<int:news_id>', methods=['PUT'])
+def update_news(news_id):
+    news = News.query.get(news_id)
+    if not news:
+        return jsonify({"message": "News not found"}), 404
 
+    author = request.json.get('author', news.author)
+    title = request.json.get('title', news.title)
+    description = request.json.get('description', news.description)
+    url = request.json.get('url', news.url)
+    source = request.json.get('source', news.source)
+    category = request.json.get('category', news.category)
+    language = request.json.get('language', news.language)
+    country = request.json.get('country', news.country)
+    published = request.json.get('published', news.published)
+    keyword_id = request.json.get('keyword_id', news.keyword_id)
 
+    news.author = author
+    news.title = title
+    news.description = description
+    news.url = url
+    news.source = source
+    news.category = category
+    news.language = language
+    news.country = country
+    news.published = published
+    news.keyword_id = keyword_id
 
+    db.session.commit()
 
+    return jsonify(news.serialize())
 
+# delete a news
+@api.route('/news/<int:news_id>', methods=['DELETE'])
+def delete_news(news_id):
+    news = News.query.get(news_id)
+    if news:
+        db.session.delete(news)
+        db.session.commit()
+        return jsonify({"message": "News deleted successfully"})
+    else:
+        return jsonify({"message": "News not found"}), 404
 
+@api.route('/news_favorites', methods=['GET'])
+def get_news_favorites():
+    news_favorites = NewsFavorites.query.all()
+    return jsonify([news_favorite.serialize() for news_favorite in news_favorites]), 200
 
+@api.route('/news_favorites', methods=['POST'])
+def create_news_favorite():
+    data = request.get_json()
+    news_id = data.get('news_id')
+    reader_id = data.get('reader_id')
+    title = data.get('title')
+    author = data.get('author')
+    source = data.get('source')
+    news_favorite = NewsFavorites(news_id=news_id, reader_id=reader_id, title=title, author=author, source=source)
+    db.session.add(news_favorite)
+    db.session.commit()
+    return jsonify(news_favorite.serialize()), 201
+
+@api.route('/news_favorites/<int:news_favorite_id>', methods=['PUT'])
+def update_news_favorite(news_favorite_id):
+    news_favorite = NewsFavorites.query.get(news_favorite_id)
+    if not news_favorite:
+        return jsonify({'error': 'NewsFavorite not found'}), 404
+    data = request.get_json()
+    news_id = data.get('news_id')
+    reader_id = data.get('reader_id')
+    title = data.get('title')
+    author = data.get('author')
+    source = data.get('source')
+    news_favorite.news_id = news_id
+    news_favorite.reader_id = reader_id
+    news_favorite.title = title
+    news_favorite.author = author
+    news_favorite.source = source
+    db.session.commit()
+    return jsonify(news_favorite.serialize()), 200
+
+@api.route('/news_favorites/<int:id>', methods=['DELETE'])
+def delete_news_favorite(id):
+    favorite = NewsFavorites.query.get(id)
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        return {"message": "NewsFavorite deleted successfully."}, 200
+    else:
+        return {"message": "NewsFavorite not found."}, 404 
+
+@api.route('/advertisers', methods=['GET'])
+def get_all_advertisers():
+    advertisers = Advertisers.query.all()
+    return jsonify([advertiser.serialize() for advertiser in advertisers])
+
+@api.route('/advertisers/<int:id>', methods=['GET'])
+def get_advertiser_by_id(id):
+    advertiser = Advertisers.query.get_or_404(id)
+    return jsonify(advertiser.serialize())
+
+@api.route('/advertisers', methods=['POST'])
+def create_advertiser():
+    data = request.get_json()
+    advertiser = Advertisers(
+        user_id=data['user_id'],
+        name=data['name'],
+        company=data['company']
+    )
+    db.session.add(advertiser)
+    db.session.commit()
+    return jsonify(advertiser.serialize()), 201
+
+@api.route('/advertisers/<int:id>', methods=['PUT'])
+def update_advertiser(id):
+    advertiser = Advertisers.query.get_or_404(id)
+    data = request.get_json()
+    advertiser.user_id = data['user_id']
+    advertiser.name = data['name']
+    advertiser.company = data['company']
+    db.session.commit()
+    return jsonify(advertiser.serialize())
+
+@api.route('/advertisers/<int:id>', methods=['DELETE'])
+def delete_advertiser(id):
+    advertiser = Advertisers.query.get_or_404(id)
+    db.session.delete(advertiser)
+    db.session.commit()
+    return '', 204
 
 
 

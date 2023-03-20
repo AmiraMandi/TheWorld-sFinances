@@ -50,9 +50,9 @@ class Reader(db.Model):
 class KeywordsFavorites(db.Model):
     __tablename__ = "KeywordsFavorites"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('Reader.id'))
+    user_id = db.Column(db.Integer, ForeignKey('User.id'))
     keyword_id = db.Column(db.Integer, ForeignKey('Keyword.id'))
-    reader = relationship('Reader')
+    user = relationship('User')
     keyword = relationship('Keyword')
 
     def __repr__(self):
@@ -83,9 +83,9 @@ class Keyword(db.Model):
 class WidgetFavorites(db.Model):
     __tablename__ = "WidgetFavorites"
     id = db.Column(db.Integer, primary_key=True)
-    reader_id = db.Column(db.Integer, ForeignKey('Reader.id'))
+    user_id = db.Column(db.Integer, ForeignKey('User.id'))
     widget_id = db.Column(db.Integer, ForeignKey('Widget.id'))
-    reader = relationship('Reader')
+    user = relationship('User')
     widget = relationship('Widget')
 
     def __repr__(self):
@@ -131,7 +131,7 @@ class News(db.Model):
     category = db.Column(db.String(100), nullable=False)
     language = db.Column(db.String(100), nullable=False)
     country = db.Column(db.String(100), nullable=False)
-    published = db.Column(db.DateTime, unique=False, nullable=False)
+    published = db.Column(db.String, unique=False, nullable=False)
     keyword_id = db.Column(db.Integer, ForeignKey('Keyword.id'))
     keyword = relationship('Keyword')
 
@@ -157,12 +157,12 @@ class NewsFavorites(db.Model):
     __tablename__ = "NewsFavorites"
     id = db.Column(db.Integer, primary_key=True)
     news_id = db.Column(db.Integer, ForeignKey('News.id'))
-    reader_id = db.Column(db.Integer, ForeignKey('Reader.id'))
+    user_id = db.Column(db.Integer, ForeignKey('User.id'))
     title = db.Column(db.String(100), nullable=False)
     author = db.Column(db.String(100), nullable=False)
     source = db.Column(db.String(100), nullable=False)
     news = relationship('News')
-    reader = relationship('Reader')
+    user = relationship('User')
 
     def __repr__(self):
         return f'<NewsFavorites {self.news_id}>'

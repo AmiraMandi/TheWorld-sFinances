@@ -36,9 +36,9 @@ def create_user():
 @api.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
     user = User.query.filter_by(id=id).first()
-    user.serialize()
-    return jsonify(user)
-    json.loads(request.data)
+    body = json.loads(request.body)
+    return body["email"]
+
     if not user:
         return jsonify({'error': 'User not found'}), 404
     user.email = request.json.get('email', user.email)

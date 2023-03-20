@@ -35,6 +35,7 @@ def create_user():
 @api.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
     user = User.query.get(id)
+    json.loads(request.data)
     if not user:
         return jsonify({'error': 'User not found'}), 404
     user.email = request.json.get('email', user.email)
@@ -44,7 +45,7 @@ def update_user(id):
     return jsonify(user.serialize()), 200
 
 
-
+# delete funciona
 @api.route('/users/<int:id>', methods=['DELETE'])
 def delete_user(id):
     user = User.query.get(id)
@@ -63,9 +64,9 @@ def get_all_readers():
     return jsonify([r.serialize() for r in readers]), 200
 
 
-@api.route('/readers/<int:reader_id>', methods=['GET'])
-def get_reader(reader_id):
-    reader = Reader.query.get(reader_id)
+@api.route('/readers/<int:user_id>', methods=['GET'])
+def get_reader(user_id):
+    reader = Reader.query.get(user_id)
     if reader is None:
         return jsonify({'error': 'Reader not found'}), 404
 
@@ -92,13 +93,13 @@ def create():
 
     return jsonify(reader.serialize()), 201
 
-@api.route('/<int:reader_id>', methods=['PUT'])
-def update(reader_id):
+@api.route('/<int:user_id>', methods=['PUT'])
+def update(user_id):
 
     data = request.get_json()
-    reader = Reader.query.get(reader_id)
+    reader = Reader.query.get(user_id)
     if reader is None:
-        return jsonify(error=f'Reader with ID {reader_id} does not exist.'), 404
+        return jsonify(error=f'Reader with ID {user_id} does not exist.'), 404
     reader.user_id = data.get('user_id', reader.user_id)
     reader.first_name = data.get('first_name', reader.first_name)
     reader.last_name = data.get('last_name', reader.last_name)
@@ -107,9 +108,9 @@ def update(reader_id):
     db.session.commit()
     return jsonify(reader.serialize()),200
 
-@api.route('/readers/<int:reader_id>', methods=['DELETE'])
-def delete_reader(reader_id):
-    reader = Reader.query.get(reader_id)
+@api.route('/readers/<int:user_id>', methods=['DELETE'])
+def delete_reader(user_id):
+    reader = Reader.query.get(user_id)
     if reader is None:
         return jsonify({'error': 'Reader not found'}), 404
 
@@ -217,26 +218,26 @@ def widgetfavorites():
         favorites = WidgetFavorites.query.all()
         return jsonify([f.serialize() for f in favorites])
     elif request.method == 'POST':
-        reader_id = request.json.get('reader_id')
+        user_id = request.json.get('user_id')
         widget_id = request.json.get('widget_id')
-        favorite = WidgetFavorites(reader_id=reader_id, widget_id=widget_id)
+        favorite = WidgetFavorites(user_id=user_id, widget_id=widget_id)
         db.session.add(favorite)
         db.session.commit()
         return jsonify(favorite.serialize()), 201
     elif request.method == 'PUT':
-        lector_id = request.json.get('lector_id')
-        favorite = WidgetFavorites.query.filter_by(lector_id=lector_id).first()
+        user_id = request.json.get('user_id')
+        favorite = WidgetFavorites.query.filter_by(user_id=user_id).first()
         if not favorite:
             return jsonify({'error': 'Favorite not found'}), 404
-        reader_id = request.json.get('reader_id')
+        user_id = request.json.get('user_id')
         widget_id = request.json.get('widget_id')
-        favorite.reader_id = reader_id
+        favorite.user_id = user_id
         favorite.widget_id = widget_id
         db.session.commit()
         return jsonify(favorite.serialize()), 200
     elif request.method == 'DELETE':
-        lector_id = request.json.get('lector_id')
-        favorite = WidgetFavorites.query.filter_by(lector_id=lector_id).first()
+        user_id = request.json.get('user_id')
+        favorite = WidgetFavorites.query.filter_by(user_id=user_id).first()
         if not favorite:
             return jsonify({'error': 'Favorite not found'}), 404
         db.session.delete(favorite)
@@ -381,11 +382,11 @@ def get_news_favorites():
 def create_news_favorite():
     data = request.get_json()
     news_id = data.get('news_id')
-    reader_id = data.get('reader_id')
+    user_id = data.get('user_id')
     title = data.get('title')
     author = data.get('author')
     source = data.get('source')
-    news_favorite = NewsFavorites(news_id=news_id, reader_id=reader_id, title=title, author=author, source=source)
+    news_favorite = NewsFavorites(news_id=news_id, user_id=user_id, title=title, author=author, source=source)
     db.session.add(news_favorite)
     db.session.commit()
     return jsonify(news_favorite.serialize()), 201
@@ -397,12 +398,12 @@ def update_news_favorite(news_favorite_id):
         return jsonify({'error': 'NewsFavorite not found'}), 404
     data = request.get_json()
     news_id = data.get('news_id')
-    reader_id = data.get('reader_id')
+    user_id = data.get('user_id')
     title = data.get('title')
     author = data.get('author')
     source = data.get('source')
     news_favorite.news_id = news_id
-    news_favorite.reader_id = reader_id
+    news_favorite.user_id = user_id
     news_favorite.title = title
     news_favorite.author = author
     news_favorite.source = source

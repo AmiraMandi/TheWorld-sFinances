@@ -24,9 +24,10 @@ def get_user(id):
 
 @api.route('/users', methods=['POST'])
 def create_user():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    is_active = request.json.get('is_active')
+    print(request.json)
+    email = request.json('email')
+    password = request.json('password')
+    is_active = request.json('is_active')
     user = User(email=email, password=password, is_active=is_active)
     db.session.add(user)
     db.session.commit()
@@ -34,13 +35,15 @@ def create_user():
 
 @api.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
-    user = User.query.get(id)
+    user = User.query.filter_by(id=id).first()
+    user.serialize()
+    return jsonify(user)
     json.loads(request.data)
     if not user:
         return jsonify({'error': 'User not found'}), 404
     user.email = request.json.get('email', user.email)
-    user.password = request.json.get('password', user.password)
-    user.is_active = request.json.get('is_active', user.is_active)
+    # user.password = request.json('password', user.password)
+    user.is_active = request.json('is_active', user.is_active)
     db.session.commit()
     return jsonify(user.serialize()), 200
 
@@ -58,13 +61,13 @@ def delete_user(id):
 
 
 # EndPOINT READERS
-@api.route('/readers', methods=['GET'])
+@api.route('/reader', methods=['GET'])
 def get_all_readers():
     readers = Reader.query.all()
     return jsonify([r.serialize() for r in readers]), 200
 
 
-@api.route('/readers/<int:user_id>', methods=['GET'])
+@api.route('/reader/<int:user_id>', methods=['GET'])
 def get_reader(user_id):
     reader = Reader.query.get(user_id)
     if reader is None:
@@ -72,8 +75,9 @@ def get_reader(user_id):
 
     return jsonify(reader.serialize()), 200
 
-@api.route('/', methods=['POST'])
+@api.route('/reader', methods=['POST'])
 def create():
+    print(request.json)
     data = request.get_json()
     reader = Reader(
         user_id=data.get('user_id'),

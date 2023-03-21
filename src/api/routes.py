@@ -4,9 +4,14 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
+import json
+import re
 
-
+api = Flask(__name__)
 api = Blueprint('api', __name__)
+
+api.secret_key = 'secretkey' #parte  login
+PASSWORD_REGEX = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$')
 
 # USER ENDPONT
 @api.route('/users', methods=['GET'])
@@ -23,25 +28,33 @@ def get_user(id):
 
 @api.route('/users', methods=['POST'])
 def create_user():
-    email = request.json.get('email')
-    password = request.json.get('password')
-    is_active = request.json.get('is_active')
+    print(request.json)
+    email = request.json('email')
+    password = request.json('password')
+    is_active = request.json('is_active')
     user = User(email=email, password=password, is_active=is_active)
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize()), 201
 
-@api.route('/users/<int:id>', methods=['PUT'])
-def update_user(id):
-    user = User.query.get(id)
+
+@api.route('/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    user = User.query.get(user_id)
     if not user:
-        return jsonify({'error': 'User not found'}), 404
-    user.email = request.json.get('email', user.email)
-    user.password = request.json.get('password', user.password)
-    user.is_active = request.json.get('is_active', user.is_active)
+        return jsonify({'message': 'User not found'}), 404
+
+    data = request.get_json()
+    user.email = data.get('email', user.email)
+    user.password = data.get('password', user.password)
+    user.is_active = data.get('is_active', user.is_active)
+
     db.session.commit()
+
     return jsonify(user.serialize()), 200
 
+
+# delete funciona
 @api.route('/users/<int:id>', methods=['DELETE'])
 def delete_user(id):
     user = User.query.get(id)
@@ -54,22 +67,23 @@ def delete_user(id):
 
 
 # EndPOINT READERS
-@api.route('/readers', methods=['GET'])
+@api.route('/reader', methods=['GET'])
 def get_all_readers():
     readers = Reader.query.all()
     return jsonify([r.serialize() for r in readers]), 200
 
 
-@api.route('/readers/<int:reader_id>', methods=['GET'])
-def get_reader(reader_id):
-    reader = Reader.query.get(reader_id)
+@api.route('/reader/<int:user_id>', methods=['GET'])
+def get_reader(user_id):
+    reader = Reader.query.get(user_id)
     if reader is None:
         return jsonify({'error': 'Reader not found'}), 404
 
     return jsonify(reader.serialize()), 200
 
-@api.route('/', methods=['POST'])
+@api.route('/reader', methods=['POST'])
 def create():
+    print(request.json)
     data = request.get_json()
     reader = Reader(
         user_id=data.get('user_id'),
@@ -89,24 +103,25 @@ def create():
 
     return jsonify(reader.serialize()), 201
 
-@api.route('/<int:reader_id>', methods=['PUT'])
-def update(reader_id):
-
-    data = request.get_json()
+@api.route('/reader/<int:reader_id>', methods=['PUT'])
+def update_reader(reader_id):
     reader = Reader.query.get(reader_id)
-    if reader is None:
-        return jsonify(error=f'Reader with ID {reader_id} does not exist.'), 404
-    reader.user_id = data.get('user_id', reader.user_id)
+    if not reader:
+        return jsonify({'message': 'Reader not found'}), 404
+    print(reader_id)
+    data = request.get_json()
     reader.first_name = data.get('first_name', reader.first_name)
     reader.last_name = data.get('last_name', reader.last_name)
     reader.birth_date = data.get('birth_date', reader.birth_date)
-    reader.gender = data.get('gender', reader.gender)
-    db.session.commit()
-    return jsonify(reader.serialize()),200
+    # reader.gender = data.get('gender', reader.gender)
 
-@api.route('/readers/<int:reader_id>', methods=['DELETE'])
-def delete_reader(reader_id):
-    reader = Reader.query.get(reader_id)
+    db.session.commit()
+
+    return jsonify(reader.serialize()), 200
+
+@api.route('/readers/<int:user_id>', methods=['DELETE'])
+def delete_reader(user_id):
+    reader = Reader.query.get(user_id)
     if reader is None:
         return jsonify({'error': 'Reader not found'}), 404
 
@@ -125,6 +140,13 @@ def get_keywords_favorites():
     except:
         return jsonify({'message': 'Error occurred while fetching keywords favorites.'}), 500
 
+@api.route('/keywordsfavorites/<int:id>', methods=['GET'])
+def get_keywordsfavorites(id):
+    keywordsfavorites = KeywordsFavorites.query.get(id)
+    if not keywordsfavorites:
+        return jsonify({'error': 'KeywordsFavorites not found'}), 404
+    return jsonify(keywordsfavorites.serialize()), 200
+
 @api.route('/keywords_favorites', methods=['POST'])
 def create_keywords_favorites():
     try:
@@ -138,34 +160,16 @@ def create_keywords_favorites():
         db.session.rollback()
         return jsonify({'message': 'Error occurred while creating keywords favorites.'}), 500
 
-@api.route('/keywords_favorites/<int:id>', methods=['PUT'])
-def update_keywords_favorites(id):
-    try:
-        keywords_favorites = KeywordsFavorites.query.filter_by(id=id).first()
-        if not keywords_favorites:
-            return jsonify({'message': 'KeywordsFavorites not found.'}), 404
-        if 'user_id' in request.json:
-            keywords_favorites.user_id = request.json['user_id']
-        if 'keyword_id' in request.json:
-            keywords_favorites.keyword_id = request.json['keyword_id']
-        db.session.commit()
-        return jsonify(keywords_favorites.serialize()), 200
-    except:
-        db.session.rollback()
-        return jsonify({'message': 'Error occurred while updating keywords favorites.'}), 500
 
-@api.route('/keywords_favorites/<int:id>', methods=['DELETE'])
-def delete_keywords_favorites(id):
-    try:
-        keywords_favorites = KeywordsFavorites.query.filter_by(id=id).first()
-        if not keywords_favorites:
-            return jsonify({'message': 'KeywordsFavorites not found.'}), 404
-        db.session.delete(keywords_favorites)
-        db.session.commit()
-        return jsonify({'message': 'KeywordsFavorites deleted successfully.'}), 200
-    except:
-        db.session.rollback()
-        return jsonify({'message': 'Error occurred while deleting keywords favorites.'}), 500
+
+@api.route('/keywordsfavorites/<int:id>', methods=['DELETE'])
+def delete_keywordsfavorites(id):
+    keywordsfavorites = KeywordsFavorites.query.get(id)
+    if not keywordsfavorites:
+        return jsonify({'error': 'KeywordsFavorites not found'}), 404
+    db.session.delete(keywordsfavorites)
+    db.session.commit()
+    return jsonify({'message': 'KeywordsFavorites deleted successfully'}), 200
 
 
 # ENDPOINT KEYWORD
@@ -173,6 +177,8 @@ def delete_keywords_favorites(id):
 def get_all_keywords():
     keywords = Keyword.query.all()
     return jsonify([keyword.serialize() for keyword in keywords])
+
+
 @api.route('/keyword/<int:keyword_id>', methods=['GET'])
 def get_keyword(keyword_id):
     keyword = Keyword.query.get(keyword_id)
@@ -180,67 +186,52 @@ def get_keyword(keyword_id):
         return jsonify(keyword.serialize())
     else:
         return jsonify({"error": "Keyword not found"}), 404
-@api.route('/keyword/', methods=['POST'])
+
+
+@api.route('/keywords', methods=['POST'])
 def create_keyword():
-    data = request.json
-    keyword = Keyword(keyword=data['keyword'], description=data['description'])
-    db.session.add(keyword)
+    data = request.get_json()
+    keyword = data.get('keyword')
+    description = data.get('description')
+
+    if not keyword or not description:
+        return jsonify({'message': 'Keyword and description are required'}), 400
+
+    if Keyword.query.filter_by(keyword=keyword).first():
+        return jsonify({'message': 'Keyword already exists'}), 409
+
+    new_keyword = Keyword(keyword=keyword, description=description)
+
+    db.session.add(new_keyword)
     db.session.commit()
-    return jsonify(keyword.serialize()), 201
-@api.route('/keyword/<int:keyword_id>', methods=['PUT'])
-def update_keyword(keyword_id):
-    keyword = Keyword.query.get(keyword_id)
-    if not keyword:
-        return jsonify({"error": "Keyword not found"}), 404
-    data = request.json
-    keyword.keyword = data['keyword']
-    keyword.description = data['description']
-    db.session.commit()
-    return jsonify(keyword.serialize())
-@api.route('/keyword/<int:keyword_id>', methods=['DELETE'])
-def delete_keyword(keyword_id):
-    keyword = Keyword.query.get(keyword_id)
-    if not keyword:
-        return jsonify({"error": "Keyword not found"}), 404
-    db.session.delete(keyword)
-    db.session.commit()
-    return jsonify({"message": "Keyword deleted successfully"})
+
+    return jsonify(new_keyword.serialize()), 201
 
 
-# ENDPOINT widgetfavorites
-@api.route('/widgetfavorites', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def widgetfavorites():
-    if request.method == 'GET':
-        favorites = WidgetFavorites.query.all()
-        return jsonify([f.serialize() for f in favorites])
-    elif request.method == 'POST':
-        reader_id = request.json.get('reader_id')
-        widget_id = request.json.get('widget_id')
-        favorite = WidgetFavorites(reader_id=reader_id, widget_id=widget_id)
-        db.session.add(favorite)
+@api.route('/keyword/<int:id>', methods=['PUT'])
+def update_keyword(id):
+    keyword = Keyword.query.get(id)
+    if not keyword:
+        return "Keyword not found.", 404
+
+    data = request.get_json()
+    keyword.keyword = data.get('keyword', keyword.keyword)
+    keyword.description = data.get('description', keyword.description)
+    db.session.commit()
+
+    return jsonify(keyword.serialize()), 200
+
+
+
+@api.route('/keyword/<int:id>', methods=['DELETE'])
+def delete_keyword(id):
+    keyword = Keyword.query.get(id)
+    if keyword:
+        db.session.delete(keyword)
         db.session.commit()
-        return jsonify(favorite.serialize()), 201
-    elif request.method == 'PUT':
-        lector_id = request.json.get('lector_id')
-        favorite = WidgetFavorites.query.filter_by(lector_id=lector_id).first()
-        if not favorite:
-            return jsonify({'error': 'Favorite not found'}), 404
-        reader_id = request.json.get('reader_id')
-        widget_id = request.json.get('widget_id')
-        favorite.reader_id = reader_id
-        favorite.widget_id = widget_id
-        db.session.commit()
-        return jsonify(favorite.serialize()), 200
-    elif request.method == 'DELETE':
-        lector_id = request.json.get('lector_id')
-        favorite = WidgetFavorites.query.filter_by(lector_id=lector_id).first()
-        if not favorite:
-            return jsonify({'error': 'Favorite not found'}), 404
-        db.session.delete(favorite)
-        db.session.commit()
-        return jsonify({'message': 'Favorite deleted'}), 200
+        return f"Keyword with id {id} deleted.", 200
     else:
-        return jsonify({'error': 'Method not allowed'}), 405
+        return "Keyword not found.", 404
 
 
 # ENDPOINT WIDGETS
@@ -273,6 +264,21 @@ def add_widget():
     serialized_widget = new_widget.serialize()
     return jsonify(serialized_widget), 201
 
+@api.route('/widgets/<int:id>', methods=['DELETE'])
+def delete_widget(id):
+    try:
+        widget = Widget.query.get(id)
+        if widget:
+            db.session.delete(widget)
+            db.session.commit()
+            return jsonify({'message': 'Widget deleted successfully.'}), 200
+        else:
+            return jsonify({'error': 'Widget not found.'}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        db.session.close()
 
 @api.route('/widgets/<int:id>', methods=['PUT'])
 def update_widget(id):
@@ -286,6 +292,29 @@ def update_widget(id):
     widget.type_widget = request.json.get('type_widget', widget.type_widget)
     db.session.commit()
     return jsonify(widget.serialize()), 200
+
+@api.route('/widget_favorites', methods=['GET'])
+def get_widget_favorites1():
+    widget_favorites = WidgetFavorites.query.all()
+    return jsonify([w.serialize() for w in widget_favorites]) 
+
+@api.route('/widget_favorites/<int:id>', methods=['GET'])
+def get_widget_favorites(id):
+    widget_favorites = WidgetFavorites.query.get(id)
+    if widget_favorites:
+        return jsonify(widget_favorites.serialize())
+    else:
+        return jsonify({'error': 'WidgetFavorites not found'}), 404
+
+@api.route('/widget_favorites/<int:id>', methods=['DELETE'])
+def delete_widget_favorites(id):
+    widget_favorites = WidgetFavorites.query.get(id)
+    if widget_favorites:
+        db.session.delete(widget_favorites)
+        db.session.commit()
+        return jsonify({'message': 'WidgetFavorites deleted successfully'})
+    else:
+        return jsonify({'error': 'WidgetFavorites not found'}), 404
 
 
 # ENDPOINT NEWS
@@ -324,38 +353,6 @@ def create_news():
     return jsonify(news.serialize()), 201
 
 
-@api.route('/news/<int:news_id>', methods=['PUT'])
-def update_news(news_id):
-    news = News.query.get(news_id)
-    if not news:
-        return jsonify({"message": "News not found"}), 404
-
-    author = request.json.get('author', news.author)
-    title = request.json.get('title', news.title)
-    description = request.json.get('description', news.description)
-    url = request.json.get('url', news.url)
-    source = request.json.get('source', news.source)
-    category = request.json.get('category', news.category)
-    language = request.json.get('language', news.language)
-    country = request.json.get('country', news.country)
-    published = request.json.get('published', news.published)
-    keyword_id = request.json.get('keyword_id', news.keyword_id)
-
-    news.author = author
-    news.title = title
-    news.description = description
-    news.url = url
-    news.source = source
-    news.category = category
-    news.language = language
-    news.country = country
-    news.published = published
-    news.keyword_id = keyword_id
-
-    db.session.commit()
-
-    return jsonify(news.serialize())
-
 
 @api.route('/news/<int:news_id>', methods=['DELETE'])
 def delete_news(news_id):
@@ -370,53 +367,28 @@ def delete_news(news_id):
 
 # ENDPOINT NEW FAVORITE
 @api.route('/news_favorites', methods=['GET'])
-def get_news_favorites():
-    news_favorites = NewsFavorites.query.all()
-    return jsonify([news_favorite.serialize() for news_favorite in news_favorites]), 200
+def get_all_news_favorites():
+    news_favs = NewsFavorites.query.all()
+    return jsonify([nf.serialize() for nf in news_favs])
 
-@api.route('/news_favorites', methods=['POST'])
-def create_news_favorite():
-    data = request.get_json()
-    news_id = data.get('news_id')
-    reader_id = data.get('reader_id')
-    title = data.get('title')
-    author = data.get('author')
-    source = data.get('source')
-    news_favorite = NewsFavorites(news_id=news_id, reader_id=reader_id, title=title, author=author, source=source)
-    db.session.add(news_favorite)
-    db.session.commit()
-    return jsonify(news_favorite.serialize()), 201
 
-@api.route('/news_favorites/<int:news_favorite_id>', methods=['PUT'])
-def update_news_favorite(news_favorite_id):
-    news_favorite = NewsFavorites.query.get(news_favorite_id)
-    if not news_favorite:
-        return jsonify({'error': 'NewsFavorite not found'}), 404
-    data = request.get_json()
-    news_id = data.get('news_id')
-    reader_id = data.get('reader_id')
-    title = data.get('title')
-    author = data.get('author')
-    source = data.get('source')
-    news_favorite.news_id = news_id
-    news_favorite.reader_id = reader_id
-    news_favorite.title = title
-    news_favorite.author = author
-    news_favorite.source = source
-    db.session.commit()
-    return jsonify(news_favorite.serialize()), 200
+@api.route('/news_favorites/<int:id>', methods=['GET'])
+def news_favorites(id):
+    news_fav = NewsFavorites.query.get(id)
+    if not news_fav:
+        return jsonify({'error': 'NewsFavorites not found'}), 404
+
+    return jsonify(news_fav.serialize())
 
 @api.route('/news_favorites/<int:id>', methods=['DELETE'])
 def delete_news_favorite(id):
-    favorite = NewsFavorites.query.get(id)
-    if favorite:
-        db.session.delete(favorite)
+    news_favorite = NewsFavorites.query.get(id)
+    if news_favorite:
+        db.session.delete(news_favorite)
         db.session.commit()
-        return {"message": "NewsFavorite deleted successfully."}, 200
+        return jsonify({'message': 'NewsFavorite deleted successfully'})
     else:
-        return {"message": "NewsFavorite not found."}, 404 
-
-
+        return jsonify({'error': 'NewsFavorite not found'}), 404
 # ENDPOINT ADVERTISERS
 @api.route('/advertisers', methods=['GET'])
 def get_advertisers():
@@ -458,3 +430,70 @@ def delete_advertiser(id):
     db.session.delete(advertiser)
     db.session.commit()
     return '', 204
+
+# login
+
+# Regular expression to check for password strength
+
+# Home page
+@api.route('/')
+def home():
+    if 'authenticated' in session:
+        return render_template('home.html', username=session['username'])
+    else:
+        return redirect('/login')
+# Login page
+@api.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Get form data
+        username = request.form['username']
+        password = request.form['password']
+        # Check if user exists
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM users WHERE username = %s', [username])
+        user = cur.fetchone()
+        # Check password
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            session['authenticated'] = True
+            session['username'] = username
+            return redirect('/')
+        else:
+            return render_template('login.html', error='Invalid username or password')
+    else:
+        return render_template('login.html')
+# Logout page
+@api.route('/logout')
+def logout():
+    session.pop('authenticated', None)
+    session.pop('username', None)
+    return redirect('/login')
+# Signup page
+@api.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        # Get form data
+        user_name = request.form['user_name']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        # Check if username already exists
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM users WHERE username = %s', [username])
+        user = cur.fetchone()
+        if user:
+            return render_template('signup.html', error='Username already exists')
+        # Check if passwords match and meet security requirements
+        if password != confirm_password:
+            return render_template('signup.html', error='Passwords do not match')
+        if not PASSWORD_REGEX.match(password):
+            return render_template('signup.html', error='Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one number')
+        # Hash password
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        # Insert user into database
+        cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
+        mysql.connection.commit()
+        session['authenticated'] = True
+        session['username'] = username
+        return redirect('/')
+    else:
+        return render_template('signup.html')

@@ -51,7 +51,7 @@ class KeywordsFavorites(db.Model):
     __tablename__ = "KeywordsFavorites"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('User.id'))
-    keyword_id = db.Column(db.Integer, ForeignKey('Keyword.id'))
+    keyword_id = db.Column(db.Integer, db.ForeignKey('Keyword.id', ondelete='CASCADE'))
     user = relationship('User')
     keyword = relationship('Keyword')
 
@@ -60,8 +60,10 @@ class KeywordsFavorites(db.Model):
 
     def serialize(self):
         return {
+            "id":self.id,
             "user_id": self.user_id,
             "keyword_id": self.keyword_id}
+
 
 
 class Keyword(db.Model):
@@ -84,9 +86,9 @@ class WidgetFavorites(db.Model):
     __tablename__ = "WidgetFavorites"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('User.id'))
-    widget_id = db.Column(db.Integer, ForeignKey('Widget.id'))
+    widget_id = db.Column(db.Integer, ForeignKey('Widget.id', ondelete='CASCADE'))
     user = relationship('User')
-    widget = relationship('Widget')
+    widget = relationship('Widget', backref='favorites')
 
     def __repr__(self):
         return f'<WidgetFavorites {self.id}>'
@@ -94,8 +96,9 @@ class WidgetFavorites(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "reader_id": self.reader_id,
-            "widget_id": self.widget_id}
+            "user_id": self.user_id,
+            "widget_id": self.widget_id
+        }
 
     
 class Widget(db.Model):
@@ -169,11 +172,13 @@ class NewsFavorites(db.Model):
 
     def serialize(self):
         return {
+            "id":self.id,
             "news_id": self.news_id,
-            "reader_id": self.reader_id,
+            "user_id": self.user_id,
             "title": self.title,
             "author": self.author,
-            "source": self.source}
+            "source": self.source
+             }
 
 
 class Advertisers(db.Model):

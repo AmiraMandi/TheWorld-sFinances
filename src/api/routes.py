@@ -1,9 +1,10 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, render_template, Blueprint
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
+from werkzeug.security import generate_password_hash, check_password_hash
 import json
 import re
 
@@ -433,67 +434,51 @@ def delete_advertiser(id):
 
 # login
 
-# Regular expression to check for password strength
-
-# Home page
-@api.route('/')
-def home():
-    if 'authenticated' in session:
-        return render_template('home.html', username=session['username'])
-    else:
-        return redirect('/login')
-# Login page
-@api.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # Get form data
-        username = request.form['username']
-        password = request.form['password']
-        # Check if user exists
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM users WHERE username = %s', [username])
-        user = cur.fetchone()
-        # Check password
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-            session['authenticated'] = True
-            session['username'] = username
-            return redirect('/')
-        else:
-            return render_template('login.html', error='Invalid username or password')
-    else:
-        return render_template('login.html')
-# Logout page
-@api.route('/logout')
-def logout():
-    session.pop('authenticated', None)
-    session.pop('username', None)
-    return redirect('/login')
-# Signup page
-@api.route('/signup', methods=['GET', 'POST'])
+@api.route('/signup', methods=['POST'])
 def signup():
-    if request.method == 'POST':
-        # Get form data
-        user_name = request.form['user_name']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        # Check if username already exists
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM users WHERE username = %s', [username])
-        user = cur.fetchone()
-        if user:
-            return render_template('signup.html', error='Username already exists')
-        # Check if passwords match and meet security requirements
-        if password != confirm_password:
-            return render_template('signup.html', error='Passwords do not match')
-        if not PASSWORD_REGEX.match(password):
-            return render_template('signup.html', error='Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one number')
-        # Hash password
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        # Insert user into database
-        cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
-        mysql.connection.commit()
-        session['authenticated'] = True
-        session['username'] = username
-        return redirect('/')
-    else:
-        return render_template('signup.html')
+    users = []
+    with open("users.json", "r") as f:
+        users = json.load(f)
+    email = request.form['email']
+    password = request.form['password']
+    confirm_password = request.form['confirm_password']
+    if not email or not password or not confirm_password:
+        return jsonify({"message": "All fields are required."}), 400
+    if password != confirm_password:
+        return jsonify({"message": "Passwords do not match."}), 400
+    for user in users:
+        if user['email'] == email:
+            return jsonify({"message": "Email already exists."}), 400
+    hashed_password = generate_password_hash(password, method='sha256')
+    user = {"email": email, "password": hashed_password, "is_active": True}
+    users.append(user)
+    with open("users.json", "w") as f:
+        json.dump(users, f)
+    return jsonify({"message": "Signup successful."}), 201
+
+@api.route('/login', methods=['POST'])
+def login():
+    users = []
+    with open("users.json", "r") as f:
+        users = json.load(f)
+    email = request.form['email']
+    password = request.form['password']
+    if not email or not password:
+        return jsonify({"message": "Email and password are required."}), 400
+    for user in users:
+        if user['email'] == email:
+            if check_password_hash(user['password'], password):
+                session['email'] = email
+                return jsonify({"message": "Login successful."}), 200
+            else:
+                return jsonify({"message": "Incorrect password."}), 401
+    return jsonify({"message": "Email not found."}), 404
+
+@api.route('/logout', methods=['POST'])
+def logout():
+    session.pop('email', None)
+    return jsonify({"message": "Logout successful."}), 200
+
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)

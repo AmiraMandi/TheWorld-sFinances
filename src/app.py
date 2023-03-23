@@ -11,6 +11,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_bcrypt import Bcrypt
 
 #from models import Person
 
@@ -41,6 +42,13 @@ setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
+
+#configuración de bcrypt
+#Le agregamos al objeto app la propiedad bcrypt para que se pueda
+#consumir en cualquier archivo de la app a traves de current_app la configuración que hicimos
+bcrypt = Bcrypt(app)
+
+app.bcrypt = bcrypt
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)

@@ -4,15 +4,20 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, render_template, Blueprint
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 import json
 import re
+import time
 
 api = Flask(__name__)
+
 api = Blueprint('api', __name__)
 
 api.secret_key = 'secretkey' #parte  login
-PASSWORD_REGEX = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$')
+limiter = Limiter(key_func=get_remote_address)
+
 
 # USER ENDPONT
 @api.route('/users', methods=['GET'])
@@ -433,51 +438,75 @@ def delete_advertiser(id):
     return '', 204
 
 # login
+# @api.route('/login', methods=['POST'])
+# @limiter.limit("10 per minute")  # limit to 10 requests per minute
+# def login():
+#     email = request.json.get('email')
+#     password = request.json.get('password')
+
+   
+#     user = User.query.filter_by(email=email).first()
+
+#     if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
+#         return jsonify({'message': 'Login successful'})
+#     else:
+#         time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
+#         return jsonify({'message': 'Invalid email or password'}), 401
+
+@api.route('/login', methods=['POST', 'DELETE'])
+@limiter.limit("10 per minute")
+def login():
+    if request.method == 'POST':
+        email = request.json.get('email')
+        password = request.json.get('password')
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
+            # Store the user ID in a session to indicate that they are logged in
+            session['user_id'] = user.id
+            return jsonify({'message': 'Login successful'})
+        else:
+            time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
+            return jsonify({'message': 'Invalid email or password'}), 401
+    elif request.method == 'DELETE':
+        # Check if the user is logged in by checking if their ID is in the session
+        if 'user_id' in session:
+            # Remove the user's ID from the session to log them out
+            session.pop('user_id', None)
+            return jsonify({'message': 'Logout successful'})
+        else:
+            return jsonify({'message': 'User is not logged in'}), 401
+
+
+@api.route('/login', methods=['GET'])
+def get_login():
+    return jsonify({'message': 'Please use POST method to log in'})
 
 @api.route('/signup', methods=['POST'])
 def signup():
-    users = []
-    with open("users.json", "r") as f:
-        users = json.load(f)
-    email = request.form['email']
-    password = request.form['password']
-    confirm_password = request.form['confirm_password']
-    if not email or not password or not confirm_password:
-        return jsonify({"message": "All fields are required."}), 400
-    if password != confirm_password:
-        return jsonify({"message": "Passwords do not match."}), 400
-    for user in users:
-        if user['email'] == email:
-            return jsonify({"message": "Email already exists."}), 400
-    hashed_password = generate_password_hash(password, method='sha256')
-    user = {"email": email, "password": hashed_password, "is_active": True}
-    users.append(user)
-    with open("users.json", "w") as f:
-        json.dump(users, f)
-    return jsonify({"message": "Signup successful."}), 201
+    email = request.json.get('email')
+    password = request.json.get('password')
+    is_active = True
 
-@api.route('/login', methods=['POST'])
-def login():
-    users = []
-    with open("users.json", "r") as f:
-        users = json.load(f)
-    email = request.form['email']
-    password = request.form['password']
-    if not email or not password:
-        return jsonify({"message": "Email and password are required."}), 400
-    for user in users:
-        if user['email'] == email:
-            if check_password_hash(user['password'], password):
-                session['email'] = email
-                return jsonify({"message": "Login successful."}), 200
-            else:
-                return jsonify({"message": "Incorrect password."}), 401
-    return jsonify({"message": "Email not found."}), 404
+    # Check if user already exists
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({'message': 'User already exists'}), 409
 
-@api.route('/logout', methods=['POST'])
-def logout():
-    session.pop('email', None)
-    return jsonify({"message": "Logout successful."}), 200
+    # Hash the password using bcrypt
+    # password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+    # password_hash = password_hash en linea 475
+    # Create a new user
+    new_user = User(email=email, password=password, is_active=is_active)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully'}), 201
+
+    
+
+
 
 if __name__ == '__main__':
     db.create_all()

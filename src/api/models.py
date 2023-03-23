@@ -20,7 +20,9 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "password" : self.password,
             "is_active": self.is_active}
+            
 
 
 class Reader(db.Model):

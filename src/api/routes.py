@@ -5,10 +5,14 @@ from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from flask_limiter import Limiter
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import json
 import re
 import requests
 
+limiter = Limiter(app, key_func=get_remote_address)
+limiter.init_app(app)
 
 
 api = Flask(__name__)
@@ -437,7 +441,7 @@ def delete_advertiser(id):
 
 
 @api.route('/login', methods=['POST', 'DELETE'])
-#@Limiter.limit("10 per minute")
+@Limiter.limit("10 per minute")
 def login():
     if request.method == 'POST':
         email = request.json.get('email')

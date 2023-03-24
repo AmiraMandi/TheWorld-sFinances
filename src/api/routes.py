@@ -504,6 +504,12 @@ def signup():
 
     return jsonify({'message': 'User created successfully'}), 201
 
+ 
+
+
+ 
+
+
 # Mediastack GET
 @api.route('/newsmediastack', methods=['GET'])
 def get_newsmediastack():
@@ -531,6 +537,7 @@ def get_newsmediastack():
         return jsonify(response_body), 200
     else:
         return 'Error retrieving news data from the API', response.status_code
+
 
 
     

@@ -1,7 +1,8 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
+from flask_limiter import Limiter
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
 import json
@@ -436,7 +437,7 @@ def delete_advertiser(id):
 
 
 @api.route('/login', methods=['POST', 'DELETE'])
-@limiter.limit("10 per minute")
+#@Limiter.limit("10 per minute")
 def login():
     if request.method == 'POST':
         email = request.json.get('email')
@@ -470,7 +471,12 @@ def signup():
     email = request.json.get('email')
     password = request.json.get('password')
     is_active = True
-
+    hashed_password = current_app.bcrypt.generate_password_hash(
+        password
+    ).decode("utf-8")
+    
+    print('password', hashed_password)
+    print('hola')
     # Check if user already exists
     user = User.query.filter_by(email=email).first()
     if user:
@@ -480,7 +486,7 @@ def signup():
     # password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
     # password_hash = password_hash en linea 475
     # Create a new user
-    new_user = User(email=email, password=password, is_active=is_active)
+    new_user = User(email=email, password=hashed_password, is_active=is_active)
     db.session.add(new_user)
     db.session.commit()
 

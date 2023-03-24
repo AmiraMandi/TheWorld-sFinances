@@ -1,16 +1,15 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
+from flask_limiter import Limiter
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
 import json
 import re
 import requests
 
-x = requests.get('https://w3schools.com/python/demopage.htm')
 
-print(x.text)
 
 api = Flask(__name__)
 api = Blueprint('api', __name__)
@@ -436,72 +435,63 @@ def delete_advertiser(id):
     db.session.commit()
     return '', 204
 
-# login
 
-# Regular expression to check for password strength
-
-# Home page
-@api.route('/')
-def home():
-    if 'authenticated' in session:
-        return render_template('home.html', username=session['username'])
-    else:
-        return redirect('/login')
-# Login page
-@api.route('/login', methods=['GET', 'POST'])
+@api.route('/login', methods=['POST', 'DELETE'])
+#@Limiter.limit("10 per minute")
 def login():
     if request.method == 'POST':
-        # Get form data
-        username = request.form['username']
-        password = request.form['password']
-        # Check if user exists
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM users WHERE username = %s', [username])
-        user = cur.fetchone()
-        # Check password
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-            session['authenticated'] = True
-            session['username'] = username
-            return redirect('/')
+        email = request.json.get('email')
+        password = request.json.get('password')
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
+            # Store the user ID in a session to indicate that they are logged in
+            session['user_id'] = user.id
+            return jsonify({'message': 'Login successful'})
         else:
-            return render_template('login.html', error='Invalid username or password')
-    else:
-        return render_template('login.html')
-# Logout page
-@api.route('/logout')
-def logout():
-    session.pop('authenticated', None)
-    session.pop('username', None)
-    return redirect('/login')
-# Signup page
-@api.route('/signup', methods=['GET', 'POST'])
+            time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
+            return jsonify({'message': 'Invalid email or password'}), 401
+    elif request.method == 'DELETE':
+        # Check if the user is logged in by checking if their ID is in the session
+        if 'user_id' in session:
+            # Remove the user's ID from the session to log them out
+            session.pop('user_id', None)
+            return jsonify({'message': 'Logout successful'})
+        else:
+            return jsonify({'message': 'User is not logged in'}), 401
+
+
+@api.route('/login', methods=['GET'])
+def get_login():
+    return jsonify({'message': 'Please use POST method to log in'})
+
+@api.route('/signup', methods=['POST'])
 def signup():
-    if request.method == 'POST':
-        # Get form data
-        user_name = request.form['user_name']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        # Check if username already exists
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM users WHERE username = %s', [username])
-        user = cur.fetchone()
-        if user:
-            return render_template('signup.html', error='Username already exists')
-        # Check if passwords match and meet security requirements
-        if password != confirm_password:
-            return render_template('signup.html', error='Passwords do not match')
-        if not PASSWORD_REGEX.match(password):
-            return render_template('signup.html', error='Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one number')
-        # Hash password
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        # Insert user into database
-        cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
-        mysql.connection.commit()
-        session['authenticated'] = True
-        session['username'] = username
-        return redirect('/')
-    else:
-        return render_template('signup.html')
+    email = request.json.get('email')
+    password = request.json.get('password')
+    is_active = True
+    hashed_password = current_app.bcrypt.generate_password_hash(
+        password
+    ).decode("utf-8")
+    
+    print('password', hashed_password)
+    print('hola')
+    # Check if user already exists
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({'message': 'User already exists'}), 409
+
+    # Hash the password using bcrypt
+    # password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+    # password_hash = password_hash en linea 475
+    # Create a new user
+    new_user = User(email=email, password=hashed_password, is_active=is_active)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully'}), 201
+
 
 
 # Mediastack GET

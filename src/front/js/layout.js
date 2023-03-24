@@ -10,7 +10,10 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { Widget } from "./component/widget.jsx"
+import { Widget } from "./component/WIDGETS/Widget.jsx"
+import { WidgetForex } from "./component/WIDGETS/ForexWidget.jsx";
+import { EconomicCalendar } from "react-ts-tradingview-widgets";
+
 
 //create your first component
 const Layout = () => {
@@ -24,7 +27,8 @@ const Layout = () => {
         <ScrollToTop>
           <Navbar />
           <Widget />
-          <NewsCards />
+          <WidgetForex />
+          <EconomicCalendar />
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Demo />} path="/demo" />

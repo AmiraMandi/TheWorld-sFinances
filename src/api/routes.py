@@ -504,6 +504,35 @@ def signup():
 
     return jsonify({'message': 'User created successfully'}), 201
 
+# Mediastack GET
+@api.route('/newsmediastack', methods=['GET'])
+def get_newsmediastack():
+    url = 'http://api.mediastack.com/v1/news?access_key=65743d3d676ce441b17e76508b2bf37a'
+    category = "general"
+    # ToDo: Recibir en el body "category", si category está vacío, no hacer nada, y sino asignarle el valor enviado a la variable "category"
+
+    # optional parameters
+    params = {
+        'languages': 'en',   # retrieve English news only
+        'categories': category,  # retrieve news in the 'general' category only
+        'sort': 'published_desc', # sort by published time in descending order
+        'limit': 10 # retrieve 10 news articles only
+    }
+
+    response = requests.get(url, params=params,)
+    
+    if response.status_code == 200:
+        response_body = response.json()
+        print("*news_data", response_body)
+        # response_body = {
+        #     "message": "Georgi devuelve noticias",
+        #     "data": news_data
+        # }
+        return jsonify(response_body), 200
+    else:
+        return 'Error retrieving news data from the API', response.status_code
+
+
     
 
 

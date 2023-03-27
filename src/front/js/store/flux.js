@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
+    isLogin: true,
 	  news: [],
       message: null,
       // demo: [

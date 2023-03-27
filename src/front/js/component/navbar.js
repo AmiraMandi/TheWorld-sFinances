@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from "react-router-dom";
+
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -155,7 +157,8 @@ export const Navbar = () => {
             </li>
           </ul>
           <button className="btn btn-outline-danger" type="submit">
-              Login
+              {store.isLogin ? "logout" : "login"}
+              
             </button>
         </div>
       </div>

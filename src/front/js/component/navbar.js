@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -35,7 +36,7 @@ export const Navbar = () => {
               </a>
               <ul className="dropdown-menu bg-light">
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" onClick={() => handleCategorySelect('business')} href="#">
                     Wall Street
                   </a>
                 </li>

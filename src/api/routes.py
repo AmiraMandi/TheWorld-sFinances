@@ -498,7 +498,7 @@ def signup():
 @api.route('/newsmediastack', methods=['GET'])
 def get_newsmediastack():
     url = 'http://api.mediastack.com/v1/news?access_key=65743d3d676ce441b17e76508b2bf37a'
-    category = "general"
+    category = request.args.get('category', default='general')
     # ToDo: Recibir en el body "category", si category está vacío, no hacer nada, y sino asignarle el valor enviado a la variable "category"
 
     # optional parameters

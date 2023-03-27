@@ -10,6 +10,12 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { Widget } from "./component/Widgets/TickerTape.jsx";
+import { EconomyCalendarWidget } from "./component/Widgets/CalendarWidget.jsx"
+import { CryptoWidget } from "./component/Widgets/CryptoWidget.jsx"
+import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
+import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
+import  Login  from "./component/login.jsx";
 
 //create your first component
 const Layout = () => {
@@ -23,6 +29,10 @@ const Layout = () => {
         <ScrollToTop>
           <Navbar />
           <NewsCards />
+          <EconomyCalendarWidget />
+          <CryptoWidget/>
+          <StockMarketWidget/>
+          <WidgetForex/>
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />

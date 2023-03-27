@@ -11,8 +11,8 @@ import json
 import re
 import requests
 
-limiter = Limiter(app, key_func=get_remote_address)
-limiter.init_app(app)
+# limiter = Limiter(app, key_func=get_remote_address)
+# limiter.init_app(app)
 
 
 api = Flask(__name__)
@@ -441,7 +441,7 @@ def delete_advertiser(id):
 
 
 @api.route('/login', methods=['POST', 'DELETE'])
-@Limiter.limit("10 per minute")
+# @Limiter.limit("10 per minute")
 def login():
     if request.method == 'POST':
         email = request.json.get('email')

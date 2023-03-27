@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export const Navbar = () => {
 
   const { store, actions } = useContext(Context);
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">

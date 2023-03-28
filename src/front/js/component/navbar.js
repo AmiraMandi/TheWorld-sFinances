@@ -32,8 +32,7 @@ export const Navbar = () => {
                 to="#"
                 role="button"
                 data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+                aria-expanded="false">
                 Finance
               </Link>
               <ul className="dropdown-menu bg-light">

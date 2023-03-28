@@ -46,7 +46,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            favicon: 'rigo-baby.jpg',
+            favicon: '',
             template: 'template.html'
         }),
         new Dotenv({

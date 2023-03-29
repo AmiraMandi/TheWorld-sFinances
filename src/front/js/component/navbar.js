@@ -155,10 +155,12 @@ export const Navbar = () => {
               </ul>
             </li>
           </ul>
+          <Link to="/login">
           <button className="btn btn-outline-danger" type="submit">
-              {store.isLogin ? "logout" : "login"}
-              
-            </button>
+           
+          </button>
+          </Link>
+         
         </div>
       </div>
     </nav>

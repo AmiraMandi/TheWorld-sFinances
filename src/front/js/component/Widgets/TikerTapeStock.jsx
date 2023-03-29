@@ -4,7 +4,8 @@ import { TickerTape } from "react-ts-tradingview-widgets";
 
 export const TTStock = () => {
     return (
-        <TickerTape colorTheme="dark" ></TickerTape>
+       
+        <TickerTape colorTheme="dark"></TickerTape>
     )
 };
 

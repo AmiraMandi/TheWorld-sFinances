@@ -1,12 +1,20 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../../img/world finances.png"
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar bg-body-tertiary">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            <img src={logo} alt="Logo" width={"240"} height={"40"} className="d-inline-block align-text-top"/>
+
+          </a>
+        </div>
+      </nav>
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -51,49 +59,49 @@ export const Navbar = () => {
                     Coin Values
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Trade
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Primary Goods
                   </Link>
                 </li>
-				<li>
-                  <Link className="dropdown-item" to="#">
+                <li>
+                  <Link className="dropdown-item" to="economiccalendar">
                     Economy Calendar
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Eco-sustainable business
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Taxes and spend
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Deals
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Speculation
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" to="#">
                     Property Costs
                   </Link>
                 </li>
               </ul>
             </li>
-			<li className="nav-item dropdown">
+            <li className="nav-item dropdown">
               <Link
                 className="nav-link dropdown-toggle"
                 to="#"
@@ -156,9 +164,9 @@ export const Navbar = () => {
             </li>
           </ul>
           <button className="btn btn-outline-danger" type="submit">
-              {store.isLogin ? "logout" : "login"}
-              
-            </button>
+            {store.isLogin ? "logout" : "login"}
+
+          </button>
         </div>
       </div>
     </nav>

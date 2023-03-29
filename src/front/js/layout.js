@@ -1,21 +1,21 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-
 import { Home } from "./pages/home";
 import { NewsCards } from "./component/NewsCards.jsx"
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { Widget } from "./component/Widgets/TickerTape.jsx";
+import { Widget } from "./component/Widgets/TickerTapeCrypto.jsx";
 import { EconomyCalendarWidget } from "./component/Widgets/CalendarWidget.jsx"
 import { CryptoWidget } from "./component/Widgets/CryptoWidget.jsx"
 import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
+import { TTStock } from "./component/Widgets/TikerTapeStock.JSX"
 import  Login  from "./component/login.jsx";
+
 
 //create your first component
 const Layout = () => {
@@ -28,8 +28,9 @@ const Layout = () => {
       <BrowserRouter basename={basename}>
         <ScrollToTop>
           <Navbar />
-          <Widget />
-          <NewsCards />
+          {/* <NewsCards /> */}
+          {/* <Widget/> */}
+          <TTStock/>
           <EconomyCalendarWidget />
           <CryptoWidget/>
           <StockMarketWidget/>
@@ -43,10 +44,8 @@ const Layout = () => {
           <Footer />
         </ScrollToTop>
       </BrowserRouter>
-    
     </div>
-    );
-   };
+  );
+};
 
-   export default injectContext(Layout);
-   
+export default injectContext(Layout);

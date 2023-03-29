@@ -496,6 +496,33 @@ def signup():
 
     return jsonify({'message': 'User created successfully'}), 201
 
+# restablecer contraseña por mail
+@api.route("/recuperarPassword", methods=["POST"])
+def recuperarPassword():
+    # Recibimos los datos del front
+    body = json.loads(request.data)
+    email = body["email"]
+    # Creamos password de forma aleatoria
+    new_password = "".join(random.choice(string.ascii_uppercase + string.digits)for x in range(10))
+    # Hash password
+    hashed_password = current_app.bcrypt.generate_password_hash(new_password).decode("utf-8")
+    # Almacenamos la info del user con el email recibido
+    user = User.query.filter_by(email=email).first()
+    # Asignamos el nuevo password generado aleatoriamente al usuario
+    if user != None:
+        user.password = hashed_password
+        db.session.commit()
+
+        mail = Mail() 
+        msg = Message('Password Recovery', sender='The Worlds Finances', recipients=[user.email])
+        msg.body = "Hello " + user.name + ", your new password is " + new_password + "."
+        msg.html = "<h1>The World Finances</h1><h2>Hello " + user.name + "</h2><p>Your new password is <b>" + new_password + "</b></p><p>If you did not request this password change, please ignore and delete this message.</p><p>Message sent automatically, do not reply.</p>"
+        mail.send(msg)
+        return "Message sent!"
+
+    else:
+        return jsonify({"msg": "The entered email is not registered"}), 400
+
 
 
 # Mediastack GET

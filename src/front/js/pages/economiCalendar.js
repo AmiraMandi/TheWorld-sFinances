@@ -1,16 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { EconomicCalendar } from "react-ts-tradingview-widgets";
-import "../../styles/home.css";
-
-
-
-export const economicCalendar = () => {
-  
-  return (
-    <div>
-        <EconomicCalendar />
-    </div>
-  );
+export const EconomyCalendarWidget = () => {
+    return (
+        <EconomicCalendar colorTheme="dark" height="400" width="700"></EconomicCalendar>
+    )
 };
-
-export default economicCalendar
+export default EconomyCalendarWidget

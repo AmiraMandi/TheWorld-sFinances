@@ -8,7 +8,9 @@ import { NewsCards } from "../component/NewsCards.jsx"
 export const Home = () => {
   
   return (
-    <div></div>
+    <div>
+      Home
+    </div>
   );
 };
 

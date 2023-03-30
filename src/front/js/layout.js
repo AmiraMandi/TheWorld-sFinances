@@ -31,16 +31,18 @@ const Layout = () => {
           {/* <NewsCards /> */}
           {/* <Widget/> */}
           <TTStock/>
-          <EconomyCalendarWidget />
-          <CryptoWidget/>
-          <StockMarketWidget/>
-          <WidgetForex/>
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
+          
+          <EconomyCalendarWidget />
+          <CryptoWidget/>
+          <StockMarketWidget/>
+          <WidgetForex/>
+          
           <Footer />
         </ScrollToTop>
       </BrowserRouter>

@@ -13,7 +13,7 @@ import { EconomyCalendarWidget } from "./component/Widgets/CalendarWidget.jsx"
 import { CryptoWidget } from "./component/Widgets/CryptoWidget.jsx"
 import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
-import { TTStock } from "./component/Widgets/TikerTapeStock.JSX"
+import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import  Login  from "./component/login.jsx";
 
 

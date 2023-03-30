@@ -1,66 +1,112 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom"
 
-function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+export const Login = () => {
+  const { store, actions } = useContext(Context);
 
-  const handleLogin = (e) => {
+  /* Utilizo useState donde asigno valores de los input*/
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  /** Compruebo que los campos no se encuentren vacios, si estan completos, mando datos a metodo login en flux
+   * si no es asi salta un alert que indica al usuario que debe rellenar los campos del formulario login
+   */
+  const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
-      .then((response) => {
-        if (response.ok) {
-          setMessage('Login successful');
-        } else {
-          setMessage('Invalid email or password');
-        }
+  
+    if (email !== "" && password !== "") {
+      actions.login(email, password);
+    } else {
+      actions.notify("Fill in all fields");
+    }
+  };
+  
+  const signInWithPopUp = (e) => {
+    e.preventDefault();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // The signed-in user info
+        const user = result.user;
+      
       })
       .catch((error) => {
-        console.error(error);
-        setMessage('Error during login');
+        // Handle error here
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The emails of the user´s account used
+        const email = error.customData.email;
+        // The AuthCredential type that was used
+    
       });
   };
-
-  const handleLogout = () => {
-    fetch('/login', {
-      method: 'DELETE'
-    })
-      .then((response) => {
-        if (response.ok) {
-          setMessage('Logout successful');
-        } else {
-          setMessage('Error during logout');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setMessage('Error during logout');
-      });
-  };
-
+  
+  // When the data sent to the backend is incorrect, invoke alert
+  useEffect(() => {
+    if (store.errorAuth) {
+      actions.notify("Incorrect email or password");
+      actions.errorAuth();
+    }
+  }, [store.errorAuth]);
+  
   return (
-    <div>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email:
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-      <button onClick={handleLogout}>Logout</button>
-      {message && <div>{message}</div>}
-    </div>
-  );
-}
-
-export default Login;
+    <>
+      {store.auth ? (
+        <Navigate to={"/"} />
+      ) : (
+        <div className="min-vh-100 container-principal-login">
+          <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
+            <form className="formulario-registro">
+              <h2 className="titulo-registro text-center"> Login </h2>
+              <input
+                type="email"
+                className="input-registro"
+                id="email"
+                placeholder="Enter your email"
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                } /** Assign the value with onChange to the email variable */
+                value={email}
+              />
+              <input
+                type="password"
+                className="input-registro"
+                autoComplete="on"
+                id="password"
+                placeholder="Enter your password"
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                } /** Assign the value with onChange to the password variable */
+                value={password}
+              />
+              <div className="d-flex flex-column">
+                <button onClick={handleSubmit} className="boton-registro mb-2">
+                  Access
+                </button>
+                <button
+                  onClick={signInWithPopUp}
+                  className="boton-registro mb-2"
+                >
+                  <i className="fab fa-google me-2"> </i>
+                  Access with Google
+                </button>
+                <Link
+                  to={"/passwordRecovery"}
+                  className="text-center buttons-login"
+                >
+                  Forgot your password? Recover it
+                </Link>
+                <Link to={"/registration"} className="text-center buttons-login">
+                  Register
+                </Link>
+              </div>
+            </form>
+          </div>
+          <div>
+            {/* Alert component */} <Alert />
+          </div>
+        </div>
+      )}
+    </>
+  )
+  };
+  

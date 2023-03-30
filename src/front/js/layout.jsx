@@ -13,7 +13,7 @@ import { EconomyCalendarWidget } from "./component/Widgets/CalendarWidget.jsx"
 import { CryptoWidget } from "./component/Widgets/CryptoWidget.jsx"
 import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
-import { TTStock } from "./component/Widgets/TikerTapeStock.JSX"
+import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import  Login  from "./component/login.jsx";
 
 
@@ -31,16 +31,18 @@ const Layout = () => {
           {/* <NewsCards /> */}
           {/* <Widget/> */}
           <TTStock/>
-          <EconomyCalendarWidget />
-          <CryptoWidget/>
-          <StockMarketWidget/>
-          <WidgetForex/>
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
+          
+          <EconomyCalendarWidget />
+          <CryptoWidget/>
+          <StockMarketWidget/>
+          <WidgetForex/>
+          
           <Footer />
         </ScrollToTop>
       </BrowserRouter>

@@ -501,14 +501,17 @@ def signup():
 # Mediastack GET
 @api.route('/newsmediastack', methods=['GET'])
 def get_newsmediastack():
-    url = 'http://api.mediastack.com/v1/news?access_key=65743d3d676ce441b17e76508b2bf37a'
-    category = request.args.get('category', default='general')
+    url = 'http://api.mediastack.com/v1/news?access_key=d3f508cbdee0f9fbedf32c471549f52b'
+    category = request.args.get('category', default='business')
+    keywords = request.args.get('keywords', default='')
+    print("las categorias", category)
     # ToDo: Recibir en el body "category", si category está vacío, no hacer nada, y sino asignarle el valor enviado a la variable "category"
 
     # optional parameters
     params = {
         'languages': 'en',   # retrieve English news only
         'categories': category,  # retrieve news in the 'general' category only
+        'keywords': keywords, #keywords are null at first
         'sort': 'published_desc', # sort by published time in descending order
         'limit': 10 # retrieve 10 news articles only
     }
@@ -517,7 +520,6 @@ def get_newsmediastack():
     
     if response.status_code == 200:
         response_body = response.json()
-        print("*news_data", response_body)
         # response_body = {
         #     "message": "Georgi devuelve noticias",
         #     "data": news_data

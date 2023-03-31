@@ -29,10 +29,10 @@ const Layout = () => {
         <ScrollToTop>
           <Navbar />
           <NewsCards />
-          <EconomyCalendarWidget />
+          {/* <EconomyCalendarWidget />
           <CryptoWidget/>
           <StockMarketWidget/>
-          <WidgetForex/>
+          <WidgetForex/> */}
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />

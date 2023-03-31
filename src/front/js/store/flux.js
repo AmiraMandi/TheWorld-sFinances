@@ -56,14 +56,14 @@ const getState = ({ getStore, getActions, setStore }) => {
       //   console.log(data)
       //   setStore({news: data});
       // },
-      getNews: async() => {
+      getNews: async(keywords) => {
         //To-DO: Definir dentro del requestOptions un body donde pueda pasar un parámetro "category" que vaya a recibir el back. Si no recibe ninguno, enviarlo vacío o por default(general)
       let requestOptions = {
         method: 'GET',
         redirect: 'follow'
       };
       
-      fetch("https://3001-amiramandi-theworldsfin-tct6o3g5z63.ws-eu92.gitpod.io/api/newsmediastack", requestOptions)
+      fetch(process.env.BACKEND_URL+`/api/newsmediastack${keywords? `?keywords=${keywords}`:""}`)
         .then(response => response.json())
         .then(result => {
           console.log(result);

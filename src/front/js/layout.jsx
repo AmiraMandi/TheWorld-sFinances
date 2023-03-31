@@ -14,7 +14,7 @@ import { CryptoWidget } from "./component/Widgets/CryptoWidget.jsx"
 import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
 import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
-import  Login  from "./component/login.jsx";
+import { Login } from "./component/login.jsx";
 
 
 //create your first component
@@ -37,7 +37,6 @@ const Layout = () => {
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
-          
           <EconomyCalendarWidget />
           <CryptoWidget/>
           <StockMarketWidget/>

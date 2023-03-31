@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 import logo from "../../img/world finances.png"
 import { Context } from "../store/appContext";
 
@@ -163,10 +164,10 @@ export const Navbar = () => {
               </ul>
             </li>
           </ul>
-          <button className="btn btn-outline-danger" type="submit">
-              {store.isLogin ? "logout" : "login"}
-              
-            </button>
+          <Link to="/login">
+                    <Button variant="dark">Sign In
+                    </Button>
+          </Link>
         </div>
       </div>
     </nav>

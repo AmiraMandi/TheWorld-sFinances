@@ -15,10 +15,8 @@ import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
 import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import { Login } from "./component/login.jsx";
+
 import { Brand } from "./component/brand.jsx";
-
-
-
 
 
 //create your first component
@@ -48,6 +46,10 @@ const Layout = () => {
             <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar"/>
             <Route element={<WidgetForex />} path="finance/coinvalue"/>
           </Routes>
+          <EconomyCalendarWidget />
+          <CryptoWidget/>
+          <StockMarketWidget/>
+          <WidgetForex/>
           <Footer />
         </ScrollToTop>
       </BrowserRouter>

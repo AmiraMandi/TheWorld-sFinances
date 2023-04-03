@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 import { Context } from "../store/appContext";
 import "../../styles/Navbar.css"
 
@@ -12,6 +13,7 @@ export const Navbar1 = () => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
        
         <div className="container-fluid">
+
           <button
             className="navbar-toggler"
             type="button"
@@ -19,8 +21,7 @@ export const Navbar1 = () => {
             data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+            aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse " id="navbarSupportedContent">
@@ -165,7 +166,6 @@ export const Navbar1 = () => {
         </div>
       </nav>
     </div>
-
   );
 };
 

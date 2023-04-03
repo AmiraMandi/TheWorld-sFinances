@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom"
 
+import { Context } from "../store/appContext";
+
 export const Login = () => {
   const { store, actions } = useContext(Context);
 
@@ -51,7 +53,7 @@ export const Login = () => {
   return (
     <>
       {store.auth ? (
-        <Navigate to={"/"} />
+        <Navigate to={"/home"} />
       ) : (
         <div className="min-vh-100 container-principal-login">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
@@ -96,14 +98,14 @@ export const Login = () => {
                   Forgot your password? Recover it
                 </Link>
                 <Link to={"/registration"} className="text-center buttons-login">
-                  Register
+                 Don't have an account? Register
                 </Link>
               </div>
             </form>
           </div>
-          <div>
-            {/* Alert component */} <Alert />
-          </div>
+          {/* <div>
+            Alert component <Alert /> 
+           </div> */} 
         </div>
       )}
     </>

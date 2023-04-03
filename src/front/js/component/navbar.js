@@ -10,7 +10,7 @@ export const Navbar1 = () => {
   return (
     <div>
      
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
        
         <div className="container-fluid">
 
@@ -24,13 +24,13 @@ export const Navbar1 = () => {
             aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse " id="navbarSupportedContent">
+          <div className="collapse navbar-collapse dropdown-menu-start" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
-              {/* <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/home">
+              <li className="nav-item">
+                {/* <Link className="nav-link active" aria-current="page" to="/home">
                   Home
-                </Link>
-              </li> */}
+                </Link> */}
+              </li>
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
@@ -160,7 +160,7 @@ export const Navbar1 = () => {
                 </ul>
               </li>
             </ul>
-            <button className="btn btn-outline-danger" type="submit">
+            <button className="btn btn-outline-danger" type="submit">sing up
             </button>
           </div>
         </div>

@@ -42,7 +42,7 @@ const Layout = () => {
             <Route element={<Login />} path="/login" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
-            <Route element={<WidgetForex />} path="coinvalue"/>
+            <Route element={<WidgetForex />} path="/finance/coinvalue"/>
             <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar"/>
             <Route element={<WidgetForex />} path="finance/coinvalue"/>
           </Routes>

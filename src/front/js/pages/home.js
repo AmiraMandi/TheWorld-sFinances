@@ -9,7 +9,7 @@ export const Home = () => {
   
   return (
     <div>
-      Home
+      <NewsCards />
     </div>
   );
 };

@@ -72,7 +72,7 @@
 		]
 	},
 	"dependencies": {
-		"bootstrap": "^4.6.1",
+		"bootstrap": "^4.6.2",
 		"dynamic-dual-import-webpack-plugin": "^1.1.0",
 		"flask": "^0.2.10",
 		"prop-types": "^15.6.1",

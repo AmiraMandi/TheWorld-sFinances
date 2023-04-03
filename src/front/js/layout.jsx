@@ -34,8 +34,8 @@ const Layout = () => {
         <ScrollToTop>
         <Brand  />
         <Navbar1 />
-          {/* <NewsCards /> */}
-          <Widget/>
+          <NewsCards />
+          {/* <Widget/> */}
           <TTStock/>
           {/* <CryptoWidget/>
           <StockMarketWidget/> */}

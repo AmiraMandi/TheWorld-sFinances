@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1192.85 545.36">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-2 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-2, .cls-3, .cls-4, .cls-5 {
+        fill: #fff;
+        font-family: Sprat-RegularMedium, Sprat;
+        font-size: 135.1px;
+      }
+
+      .cls-6, .cls-5 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.22em;
+      }
+    </style>
+  </defs>
+  <text class="cls-3" transform="translate(82.46 327.43)"><tspan x="0" y="0">W</tspan></text>
+  <text class="cls-5" transform="translate(216.07 327.43) scale(.7)"><tspan x="0" y="0">ORLD</tspan></text>
+  <text class="cls-2" transform="translate(481.42 327.43)"><tspan x="0" y="0">’</tspan></text>
+  <text class="cls-5" transform="translate(512.9 327.43) scale(.7)"><tspan x="0" y="0">S</tspan></text>
+  <text class="cls-2" transform="translate(566.42 327.43)"><tspan x="0" y="0" xml:space="preserve"> F</tspan></text>
+  <text class="cls-4" transform="translate(676.39 327.43) scale(.7)"><tspan class="cls-6" x="0" y="0">IN</tspan><tspan class="cls-1" x="145.23" y="0">A</tspan><tspan class="cls-6" x="241.15" y="0">NCES</tspan></text>
+</svg>

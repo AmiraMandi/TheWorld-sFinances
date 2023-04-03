@@ -1,8 +1,9 @@
 import React, {useContext, useState} from "react";
 
 import { Link } from "react-router-dom";
-
+import Button from 'react-bootstrap/Button';
 import { Context } from "../store/appContext";
+import "../../styles/Navbar.css"
 
 export const Navbar = () => {
   const [selectedCategory, setSelectedCategory] = useState('general'); // default selected category is 'general'
@@ -169,8 +170,10 @@ export const Navbar = () => {
               {store.isLogin ? "logout" : "login"}
               
             </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
   );
 };
+
+export default Navbar

@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { Context } from "../store/appContext";
 import "../../styles/Navbar.css"
 
-export const Navbar = () => {
-  const [selectedCategory, setSelectedCategory] = useState('general'); // default selected category is 'general'
+export const Navbar1 = () => {
+  const [selectedCategory, setSelectedCategory] = useState('business'); // default selected category is 'general'
   const { store, actions } = useContext(Context);
 
   const handleCategorySelect = (category) => {
@@ -176,4 +176,4 @@ export const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar1

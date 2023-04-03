@@ -5,7 +5,11 @@ let tipos2= ["EUR","MAD","UAH","BGN","USD","JPY","GBP","CHF","AUD","CAD","NZD","
 
 export const WidgetForex = () => {
     return (
-        <ForexCrossRates colorTheme="light" width="100%" height="1000" currencies={tipos2} ></ForexCrossRates>
+        <div className="container-fluid">
+            <h1 className="d-flex justify-content-center">Coin Values</h1>
+          <ForexCrossRates colorTheme="light" width="100%" height="1000" currencies={tipos2} ></ForexCrossRates>  
+        </div>
+        
     )
 };
 export default WidgetForex;

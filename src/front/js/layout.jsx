@@ -15,7 +15,7 @@ import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
 import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import { Login } from "./component/login.jsx";
-import { BrandExample } from "./component/brand.jsx";
+import { Brand } from "./component/brand.jsx";
 
 
 
@@ -32,16 +32,14 @@ const Layout = () => {
 
       <BrowserRouter basename={basename}>
         <ScrollToTop>
-          <Navbar1 />
-          <BrandExample />
-          {/* <BasicExample/> */}
+        <Brand  />
+        <Navbar1 />
           {/* <NewsCards /> */}
           <Widget/>
           <TTStock/>
           {/* <CryptoWidget/>
           <StockMarketWidget/> */}
           <Routes>
-            {/* <Route element={<EconomicCalendar/>} path="economiccalendar"/> */}
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
             <Route element={<Single />} path="/single/:theid" />

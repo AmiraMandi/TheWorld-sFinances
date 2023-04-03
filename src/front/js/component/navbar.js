@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import brand from "../../img/brand.png"
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
+import "../../styles/Navbar.css"
 
 
 export const Navbar1 = () => {
@@ -12,20 +10,7 @@ export const Navbar1 = () => {
     <div>
      
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        {/* Brand */}
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            <img src={brand} alt="Logo" width={"240"} height={"35"} className="d-inline-block align-text-top" />
-          </a>
-        </div>
-        {/* <nav className="navbar bg-body-tertiary">
-          <div className="container-fluid">
-            <a className="navbar-brand" href="#">
-              <img src={brand} alt="Logo" width={"240"} height={"35"} className="d-inline-block align-text-top" />
-            </a>
-          </div>
-
-        </nav> */}
+       
         <div className="container-fluid">
           <button
             className="navbar-toggler"
@@ -38,13 +23,13 @@ export const Navbar1 = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+          <div className="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
+              {/* <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to="/home">
                   Home
                 </Link>
-              </li>
+              </li> */}
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"

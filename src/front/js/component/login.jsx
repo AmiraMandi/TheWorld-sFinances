@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom"
+import { Auth } from "firebase/auth";
+import "../../styles/registro.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { Context } from "../store/appContext";
 
@@ -13,52 +16,56 @@ export const Login = () => {
   /** Compruebo que los campos no se encuentren vacios, si estan completos, mando datos a metodo login en flux
    * si no es asi salta un alert que indica al usuario que debe rellenar los campos del formulario login
    */
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (email !== "" && password !== "") {
+      console.log("Hola")
       actions.login(email, password);
     } else {
       actions.notify("Fill in all fields");
+      console.log(password);
     }
+
   };
-  
-  const signInWithPopUp = (e) => {
-    e.preventDefault();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info
-        const user = result.user;
-      
-      })
-      .catch((error) => {
-        // Handle error here
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The emails of the user´s account used
-        const email = error.customData.email;
-        // The AuthCredential type that was used
-    
-      });
-  };
-  
+
+  // const signInWithPopUp = (e) => {
+  //   e.preventDefault();
+  //   signInWithPopup(auth, provider)
+  //     .then((result) => {
+  //       // The signed-in user info
+  //       const user = result.user;
+
+  //     })
+  //     .catch((error) => {
+  //       // Handle error here
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       // The emails of the user´s account used
+  //       const email = error.customData.email;
+  //       // The AuthCredential type that was used
+
+  //     });
+  // };
+
   // When the data sent to the backend is incorrect, invoke alert
-  useEffect(() => {
-    if (store.errorAuth) {
-      actions.notify("Incorrect email or password");
-      actions.errorAuth();
-    }
-  }, [store.errorAuth]);
-  
+  // useEffect(() => {
+  //   if (store.errorAuth) {
+  //     actions.notify("Incorrect email or password");
+  //     actions.errorAuth();
+  //   }
+  // }, [store.errorAuth]);
+
   return (
     <>
-      {store.auth ? (
+      {store.token ? (
         <Navigate to={"/home"} />
       ) : (
         <div className="min-vh-100 container-principal-login">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
             <form className="formulario-registro">
-              <h2 className="titulo-registro text-center"> Login </h2>
+              <h2 className="titulo-registro text-center"> Sign in </h2>
               <input
                 type="email"
                 className="input-registro"
@@ -85,7 +92,7 @@ export const Login = () => {
                   Access
                 </button>
                 <button
-                  onClick={signInWithPopUp}
+                  // onClick={signInWithPopUp}
                   className="boton-registro mb-2"
                 >
                   <i className="fab fa-google me-2"> </i>
@@ -98,17 +105,16 @@ export const Login = () => {
                   Forgot your password? Recover it
                 </Link>
                 <Link to={"/registration"} className="text-center buttons-login">
-                 Don't have an account? Register
+                  Don't have an account? Register
                 </Link>
               </div>
             </form>
           </div>
           {/* <div>
             Alert component <Alert /> 
-           </div> */} 
+           </div> */}
         </div>
       )}
     </>
   )
-  };
-  
+};

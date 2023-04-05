@@ -2,12 +2,13 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from flask_limiter import Limiter
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-import json
+import json, bcrypt
 import re
 import requests
 
@@ -449,13 +450,30 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
-            # Store the user ID in a session to indicate that they are logged in
-            session['user_id'] = user.id
-            return jsonify({'message': 'Login successful'})
-        else:
-            time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
-            return jsonify({'message': 'Invalid email or password'}), 401
+        if user is None:
+            return jsonify({"msg": "User does not exist"}), 404
+        
+    # Si el email o password no coindicen retornamos error de autentificacion
+        if email != user.email or not current_app.bcrypt.check_password_hash(
+            user.password, password):
+            return jsonify({"msg": "Bad username or password"}), 401
+
+
+        access_token = {
+        "token": create_access_token(identity=email)
+    }
+        
+        return jsonify(access_token)
+
+        # if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
+        #     # Store the user ID in a session to indicate that they are logged in
+        #     session['user_id'] = user.id
+        #     return jsonify({'message': 'Login successful'})
+        # else:
+        #     # time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
+        #     return jsonify({'message': 'Invalid email or password'}), 401
+
+
     elif request.method == 'DELETE':
         # Check if the user is logged in by checking if their ID is in the session
         if 'user_id' in session:
@@ -479,8 +497,7 @@ def signup():
         password
     ).decode("utf-8")
     
-    print('password', hashed_password)
-    print('hola')
+
     # Check if user already exists
     user = User.query.filter_by(email=email).first()
     if user:
@@ -528,7 +545,7 @@ def recuperarPassword():
 # Mediastack GET
 @api.route('/newsmediastack', methods=['GET'])
 def get_newsmediastack():
-    url = 'http://api.mediastack.com/v1/news?access_key=d3f508cbdee0f9fbedf32c471549f52b'
+    url = 'http://api.mediastack.com/v1/news?access_key=4a32d807e8f096e6c57661d4576ea097'
     category = request.args.get('category', default='business')
     keywords = request.args.get('keywords', default='')
     print("las categorias", category)

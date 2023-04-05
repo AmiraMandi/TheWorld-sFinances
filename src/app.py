@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import os
 from flask_bcrypt import Bcrypt
 from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -32,6 +33,10 @@ db.init_app(app)
 
 # Allow CORS requests to this API
 CORS(app)
+
+
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_Secret_Key')
+jwt = JWTManager(app)
 
 bcrypt = Bcrypt(app)
 print('bcrypt', bcrypt)

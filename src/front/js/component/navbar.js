@@ -170,6 +170,8 @@ export const Navbar1 = () => {
                     <Button variant="dark">Sign In
                     </Button>
           </Link>
+         
+
           </div>
         </div>
       </nav>

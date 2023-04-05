@@ -15,6 +15,8 @@ import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
 import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import { Login } from "./component/login.jsx";
+import { RecuperacionPassword } from "./component/recuperacionpassword.jsx";
+import { Registro } from "./component/registro.jsx";
 
 import { Brand } from "./component/brand.jsx";
 
@@ -30,26 +32,29 @@ const Layout = () => {
 
       <BrowserRouter basename={basename}>
         <ScrollToTop>
-        <Brand  />
-        <Navbar1 />
-          <NewsCards />
+          <Brand />
+          <Navbar1 />
+
           {/* <Widget/> */}
-          <TTStock/>
+          <TTStock />
           {/* <CryptoWidget/>
           <StockMarketWidget/> */}
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
+            <Route element={<RecuperacionPassword />} path="/passwordRecovery" />
+            <Route element={<Registro />} path="/registration" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
-            <Route element={<WidgetForex />} path="coinvalue"/>
-            <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar"/>
-            <Route element={<WidgetForex />} path="finance/coinvalue"/>
+            <Route element={<WidgetForex />} path="coinvalue" />
+            <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar" />
+            <Route element={<WidgetForex />} path="finance/coinvalue" />
           </Routes>
+          {/* <NewsCards /> */}
           <EconomyCalendarWidget />
-          <CryptoWidget/>
-          <StockMarketWidget/>
-          <WidgetForex/>
+          {/* <CryptoWidget />
+          <StockMarketWidget />
+          <WidgetForex /> */}
           <Footer />
         </ScrollToTop>
       </BrowserRouter>

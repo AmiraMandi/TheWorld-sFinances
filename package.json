@@ -74,6 +74,7 @@
 	"dependencies": {
 		"bootstrap": "^4.6.2",
 		"dynamic-dual-import-webpack-plugin": "^1.1.0",
+		"firebase": "^9.19.1",
 		"flask": "^0.2.10",
 		"prop-types": "^15.6.1",
 		"react": "^17.0.2",

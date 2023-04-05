@@ -15,8 +15,9 @@ import { WidgetForex } from "./component/Widgets/WidgetForex.jsx"
 import { StockMarketWidget } from "./component/Widgets/StockMarket.jsx"
 import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import { Login } from "./component/login.jsx";
-
+import { Advertisers} from "./component/Advertiser.jsx"
 import { Brand } from "./component/brand.jsx";
+import '../styles/footer.css'
 
 
 //create your first component
@@ -26,17 +27,13 @@ const Layout = () => {
   const basename = process.env.BASENAME || "";
 
   return (
-    <div>
+    <div className="layout">
 
       <BrowserRouter basename={basename}>
+        
         <ScrollToTop>
         <Brand  />
         <Navbar1 />
-          {/* <NewsCards /> */}
-          {/* <Widget/> */}
-          <TTStock/>
-          {/* <CryptoWidget/>
-          <StockMarketWidget/> */}
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
@@ -46,10 +43,10 @@ const Layout = () => {
             <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar"/>
             <Route element={<WidgetForex />} path="finance/coinvalue"/>
           </Routes>
-          {/* <WidgetForex/> */}
-          <Footer />
+        <Advertisers />
         </ScrollToTop>
       </BrowserRouter>
+       <Footer />
     </div>
   );
 };

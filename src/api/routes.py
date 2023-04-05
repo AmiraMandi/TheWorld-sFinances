@@ -410,25 +410,25 @@ def get_advertiser(id):
         return jsonify({'error': 'Advertiser not found'}), 404
     return jsonify(advertiser.serialize()), 200
 
-@api.route('/advertisers', methods=['POST'])
-def create_advertiser():
-    user_id = request.json.get('user_id')
-    name = request.json.get('name')
-    company = request.json.get('company')
-    advertiser = Advertisers(user_id=user_id, name=name, company=company)
-    db.session.add(advertiser)
-    db.session.commit()
-    return jsonify(advertiser.serialize()), 201
-
-@api.route('/advertisers/<int:id>', methods=['PUT'])
+@api.route('/<int:id>', methods=['PUT'])
 def update_advertiser(id):
-    advertiser = Advertisers.query.get(id)
-    if not advertiser:
-        return jsonify({'error': 'Advertiser not found'}), 404
-    advertiser.name = request.json.get('name', advertiser.name)
-    advertiser.company = request.json.get('company', advertiser.company)
-    db.session.commit()
-    return jsonify(advertiser.serialize()), 200
+    data = request.get_json()
+    try:
+        advertiser = Advertisers.query.get(id)
+        if advertiser:
+            advertiser.user_id = data.get('user_id', advertiser.user_id)
+            advertiser.name = data.get('name', advertiser.name)
+            advertiser.last_name = data.get('last_name', advertiser.last_name)
+            advertiser.company = data.get('company', advertiser.company)
+            advertiser.company_address = data.get('company_address', advertiser.company_address)
+            advertiser.CIF_NIF = data.get('CIF_NIF', advertiser.CIF_NIF)
+            db.session.commit()
+            return jsonify(advertiser.serialize())
+        else:
+            return 'Advertiser not found', 404
+    except SQLAlchemyError as e:
+        return str(e), 500
+
 
 @api.route('/advertisers/<int:id>', methods=['DELETE'])
 def delete_advertiser(id):

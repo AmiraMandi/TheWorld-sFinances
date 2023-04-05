@@ -1,6 +1,7 @@
 import React from 'react';
-import { BsFacebook,BsTwitter ,BsLinkedin,BsGoogle} from "react-icons/bs";
-
+import { BsFacebook, BsTwitter, BsLinkedin, BsInstagram } from "react-icons/bs";
+import '../../styles/footer.css'
+import WF from '../../../../1.png'
 
 
 
@@ -10,28 +11,26 @@ export const Footer = () => (
 		<div className='container text-center text-md-left'>
 			<div className='row text-center text-md-left'>
 				<div className='col-sm-3 col-md-3 col-lg-3 col-xl-3 mx-auto mt-3'>
-					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>Compañy name</h5>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste in quia cupiditate accusamus architecto modi ea, fugit labore omnis excepturi blanditiis rerum ipsa, sequi totam culpa optio aliquid accusantium nostrum?</p>
+					<a href="/home">
+						<img src={WF} alt="logo" className='WF' />
+					</a>
+					
+					<p>World's Finances: Tu fuente confiable de noticias financieras, tecnología y criptomonedas. Mantente al día con las últimas tendencias y descubre oportunidades de inversión en un solo lugar.</p>
 				</div>
 				<div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
-					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>products</h5>
+					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>Colaborate with us</h5>
 					<p>
-						<a href="#" className='text-white' >provedores</a>
+						<a href="#" className='text-white' >Advertisers</a>
 					</p>
 					<p>
 						<a href="#" className='text-white' >provedores</a>
 					</p>
-					<p>
-						<a href="#" className='text-white' >provedores</a>
-					</p>
-					<p>
-						<a href="#" className='text-white' >provedores</a>
-					</p>
+				
 				</div>
-				<div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
+				{/* <div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
 					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>About us</h5>
 					<p>
-						<a href="#" className='text-white' >provedores</a>
+						<a href="#" className='text-white' >Contact us</a>
 					</p>
 					<p>
 						<a href="#" className='text-white' >provedores</a>
@@ -42,7 +41,7 @@ export const Footer = () => (
 					<p>
 						<a href="#" className='text-white' >provedores</a>
 					</p>
-				</div>
+				</div> */}
 				<div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
 					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>About us</h5>
 					<p>
@@ -60,41 +59,42 @@ export const Footer = () => (
 				</div>
 			</div>
 			<hr className='mb-4' />
-		<div className='row aling-items-center'>
-			<div className='col-sm-7 col-md-7 col-lg-7 col-xl-7 '>
-				<p>© 2023 Copyright all right reserved by:
-					<a href="#"> 
-					<strong className='text-warning'>The World's Finances
-					</strong>
-					</a>
-				</p>
+			<div className='row aling-items-center'>
+				<div className='col-sm-7 col-md-7 col-lg-7 col-xl-7 '>
+					<p>© 2023 Copyright all right reserved by:
+						<a href="#">
+							<strong className='text-warning'>The World's Finances
+							</strong>
+						</a>
+					</p>
+				</div>
+				<div className='col-sm-5 col-md-5 col-lg-4 col-xl-4'>
+					<ul className='list-unstyled list-inline'>
+						<h6>Follow Us</h6>
+						<li className='list-inline-item'>
+							<a href="#">
+								<i className='fab-fa-facebook'><BsFacebook /></i>
+							</a>
+						</li>
+						<li className='list-inline-item'>
+							<a href="#">
+								<i className='fab-fa-facebook'><BsTwitter /></i>
+							</a>
+						</li>
+						<li className='list-inline-item'>
+							<a href="#">
+								<i className='fab-fa-facebook'><BsLinkedin /></i>
+							</a>
+						</li>
+						<li className='list-inline-item'>
+							<a href="#">
+								<i className='fab-fa-facebook'><BsInstagram /></i>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
-			<div className='col-sm-5 col-md-5 col-lg-4 col-xl-4'>
-				<ul className='list-unstyled list-inline'>
-					<li className='list-inline-item'>
-						<a href="#">
-						<i className='fab-fa-facebook'><BsFacebook/></i>
-						</a>
-					</li>
-					<li className='list-inline-item'>
-						<a href="#">
-						<i className='fab-fa-facebook'><BsTwitter/></i>
-						</a>
-					</li>
-					<li className='list-inline-item'>
-						<a href="#">
-						<i className='fab-fa-facebook'><BsLinkedin/></i>
-						</a>
-					</li>
-					<li className='list-inline-item'>
-						<a href="#">
-						<i className='fab-fa-facebook'><BsGoogle/></i>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		
+
 		</div>
 
 	</footer>

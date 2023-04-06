@@ -17,7 +17,6 @@ import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import { Login } from "./component/login.jsx";
 import { RecuperacionPassword } from "./component/recuperacionpassword.jsx";
 import { Registro } from "./component/registro.jsx";
-
 import { Advertisers} from "./component/Advertiser.jsx"
 import { Brand } from "./component/brand.jsx";
 import '../styles/footer.css'
@@ -44,7 +43,7 @@ const Layout = () => {
             <Route element={<Registro />} path="/registration" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found!</h1>} />
-            <Route element={<WidgetForex />} path="coinvalue" />
+            <Route element={<WidgetForex />} path="/finance/coinvalue" />
             <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar" />
             <Route element={<WidgetForex />} path="finance/coinvalue" />
           </Routes>

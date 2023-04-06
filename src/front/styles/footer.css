@@ -1,0 +1,17 @@
+.layout {
+    min-height: 100vh;
+}
+
+.bg-dark.text-white.pt-5.pb-4 {
+    position: sticky;
+    top: 100%
+}
+
+.list-inline-item {
+    padding-right: 40px;
+    font-size: 25px;
+}
+
+.WF {
+    margin-top: -33px;
+}

@@ -9,7 +9,7 @@ export const Home = () => {
   
   return (
     <div>
-      <NewsCards />
+      {/* <NewsCards /> */}
     </div>
   );
 };

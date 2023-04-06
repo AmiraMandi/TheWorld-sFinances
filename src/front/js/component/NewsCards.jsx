@@ -11,13 +11,10 @@ export const NewsCards = ({title}) => {
         <div className="container">
       <div className="row">
         {store.news && store.news.map(article => (
-          <div className="col-md-4" key={article.title}>
+          <div className="col-xs-6 col-sm-6  col-md-4 col-lg-3 col-xl-3" key={article.title}>
             <Card>
-              {article.image ? (
                 <Card.Img variant="top" src={article.image} />
-              ) : (
-                <Card.Img variant="top" src={Logo} />
-              )}
+
               <Card.Body>
                 <Card.Title>{article.title}</Card.Title>
                 <Card.Text>{article.description}</Card.Text>

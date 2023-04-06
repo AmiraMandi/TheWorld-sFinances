@@ -15,7 +15,7 @@ export const Footer = () => (
 						<img src={WF} alt="logo" className='WF' />
 					</a>
 					
-					<p>World's Finances: Tu fuente confiable de noticias financieras, tecnología y criptomonedas. Mantente al día con las últimas tendencias y descubre oportunidades de inversión en un solo lugar.</p>
+					<p>World's Finances: Your trusted source for financial, technology and cryptocurrency news. Stay up to date with the latest trends and discover investment opportunities in one place.</p>
 				</div>
 				<div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
 					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>Colaborate with us</h5>

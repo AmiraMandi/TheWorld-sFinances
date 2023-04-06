@@ -20,6 +20,7 @@ import { Registro } from "./component/registro.jsx";
 import { Advertisers} from "./component/Advertiser.jsx"
 import { Brand } from "./component/brand.jsx";
 import '../styles/footer.css'
+import {DecentralizedFinances} from "./pages/Decentralized Finance.jsx"
 
 
 //create your first component
@@ -36,6 +37,9 @@ const Layout = () => {
         <ScrollToTop>
         <Brand  />
         <Navbar1 />
+        
+        <CryptoWidget/>
+        <StockMarketWidget/>
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
@@ -46,13 +50,18 @@ const Layout = () => {
             <Route element={<WidgetForex />} path="/finance/coinvalue" />
             <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar" />
             <Route element={<WidgetForex />} path="finance/coinvalue" />
+            <Route element={<DecentralizedFinances/>} path="crypto/decentralizedfinance"/>
+            <Route element={<h1>Not found!</h1>} />
+            <Route element={<h1>Not found!</h1>} />
+            <Route element={<h1>Not found!</h1>} />
+            <Route element={<h1>Not found!</h1>} />
+            <Route element={<h1>Not found!</h1>} />
+            <Route element={<h1>Not found!</h1>} /><Route element={<h1>Not found!</h1>} />
+           
           </Routes>
-          {/* <NewsCards /> */}
-          {/* <CryptoWidget />
-          <StockMarketWidget />
-          <WidgetForex /> */}
+           {/* <NewsCards/> */}
           <Footer />
-        <Advertisers />
+        {/* <Advertisers /> */}
         </ScrollToTop>
       </BrowserRouter>
        <Footer />

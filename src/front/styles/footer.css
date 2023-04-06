@@ -10,6 +10,7 @@
 .list-inline-item {
     padding-right: 40px;
     font-size: 25px;
+    flex-wrap: wrap;
 }
 
 .WF {

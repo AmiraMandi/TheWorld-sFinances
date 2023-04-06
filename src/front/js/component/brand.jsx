@@ -9,13 +9,13 @@ export const Brand =() => {
   return (
     <>
       <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="/home" className="mx-auto">
+        <Container className="container">
+          <Navbar.Brand href="/home" className="mx-auto ">
             <Link className="home link" to="/home">
             <img
               alt="Logo WF"
               src={brand}
-              width={"400"} height={"100"}
+              width={"700"} height={"95"}
               className="d-inline-block align-top "/>
             </Link>
             

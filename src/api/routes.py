@@ -2,12 +2,13 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from flask_limiter import Limiter
 from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
 from api.utils import generate_sitemap, APIException
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-import json
+import json, bcrypt
 import re
 import requests
 
@@ -410,25 +411,25 @@ def get_advertiser(id):
         return jsonify({'error': 'Advertiser not found'}), 404
     return jsonify(advertiser.serialize()), 200
 
-@api.route('/advertisers', methods=['POST'])
-def create_advertiser():
-    user_id = request.json.get('user_id')
-    name = request.json.get('name')
-    company = request.json.get('company')
-    advertiser = Advertisers(user_id=user_id, name=name, company=company)
-    db.session.add(advertiser)
-    db.session.commit()
-    return jsonify(advertiser.serialize()), 201
-
-@api.route('/advertisers/<int:id>', methods=['PUT'])
+@api.route('/<int:id>', methods=['PUT'])
 def update_advertiser(id):
-    advertiser = Advertisers.query.get(id)
-    if not advertiser:
-        return jsonify({'error': 'Advertiser not found'}), 404
-    advertiser.name = request.json.get('name', advertiser.name)
-    advertiser.company = request.json.get('company', advertiser.company)
-    db.session.commit()
-    return jsonify(advertiser.serialize()), 200
+    data = request.get_json()
+    try:
+        advertiser = Advertisers.query.get(id)
+        if advertiser:
+            advertiser.user_id = data.get('user_id', advertiser.user_id)
+            advertiser.name = data.get('name', advertiser.name)
+            advertiser.last_name = data.get('last_name', advertiser.last_name)
+            advertiser.company = data.get('company', advertiser.company)
+            advertiser.company_address = data.get('company_address', advertiser.company_address)
+            advertiser.CIF_NIF = data.get('CIF_NIF', advertiser.CIF_NIF)
+            db.session.commit()
+            return jsonify(advertiser.serialize())
+        else:
+            return 'Advertiser not found', 404
+    except SQLAlchemyError as e:
+        return str(e), 500
+
 
 @api.route('/advertisers/<int:id>', methods=['DELETE'])
 def delete_advertiser(id):
@@ -449,13 +450,30 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
-            # Store the user ID in a session to indicate that they are logged in
-            session['user_id'] = user.id
-            return jsonify({'message': 'Login successful'})
-        else:
-            time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
-            return jsonify({'message': 'Invalid email or password'}), 401
+        if user is None:
+            return jsonify({"msg": "User does not exist"}), 404
+        
+    # Si el email o password no coindicen retornamos error de autentificacion
+        if email != user.email or not current_app.bcrypt.check_password_hash(
+            user.password, password):
+            return jsonify({"msg": "Bad username or password"}), 401
+
+
+        access_token = {
+        "token": create_access_token(identity=email)
+    }
+        
+        return jsonify(access_token)
+
+        # if user and bcrypt.checkpw(password.encode('utf-8'), user.password_hash):
+        #     # Store the user ID in a session to indicate that they are logged in
+        #     session['user_id'] = user.id
+        #     return jsonify({'message': 'Login successful'})
+        # else:
+        #     # time.sleep(2)  # delay response by 2 seconds to slow down brute force attacks
+        #     return jsonify({'message': 'Invalid email or password'}), 401
+
+
     elif request.method == 'DELETE':
         # Check if the user is logged in by checking if their ID is in the session
         if 'user_id' in session:
@@ -479,8 +497,7 @@ def signup():
         password
     ).decode("utf-8")
     
-    print('password', hashed_password)
-    print('hola')
+
     # Check if user already exists
     user = User.query.filter_by(email=email).first()
     if user:

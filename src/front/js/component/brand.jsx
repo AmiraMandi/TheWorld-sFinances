@@ -15,7 +15,7 @@ export const Brand =() => {
             <img
               alt="Logo WF"
               src={brand}
-              width={"400"} height={"80"}
+              width={"400"} height={"100"}
               className="d-inline-block align-top "/>
             </Link>
             

@@ -1,7 +1,7 @@
 .collapse.navbar-collapse {
-    margin-left: 40%;
+    justify-content: center;
 }
 
 .navbar-nav li {
-    margin-right: 100px;
+    margin-right: 50px;
 }

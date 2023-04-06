@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from "../store/appContext";
 import { Card, Button } from 'react-bootstrap';
+import Logo from "../../../../public/worlds-finances-06.png"
+import "../../styles/NewsCards.css"
 
 export const NewsCards = ({title}) => {
     const { store, actions } = useContext(Context);
@@ -11,7 +13,11 @@ export const NewsCards = ({title}) => {
         {store.news && store.news.map(article => (
           <div className="col-md-4" key={article.title}>
             <Card>
-              <Card.Img variant="top" src={article.image} />
+              {article.image ? (
+                <Card.Img variant="top" src={article.image} />
+              ) : (
+                <Card.Img variant="top" src={Logo} />
+              )}
               <Card.Body>
                 <Card.Title>{article.title}</Card.Title>
                 <Card.Text>{article.description}</Card.Text>

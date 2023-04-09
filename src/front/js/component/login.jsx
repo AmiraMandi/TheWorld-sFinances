@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom"
-import { Auth } from "firebase/auth";
+import { auth, provider } from "../store/firebase";
+import { signInWithPopup } from "firebase/auth";
 import "../../styles/registro.css";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleButton } from 'react-google-button';
 
 import { Context } from "../store/appContext";
 
@@ -30,32 +31,17 @@ export const Login = () => {
 
   };
 
-  // const signInWithPopUp = (e) => {
-  //   e.preventDefault();
-  //   signInWithPopup(auth, provider)
-  //     .then((result) => {
-  //       // The signed-in user info
-  //       const user = result.user;
+  const [value,setValue] = useState('')
+  const handleGoogleSignIn =()=>{
+      signInWithPopup(auth,provider).then((data)=>{
+          setValue(data.user.email)
+          localStorage.setItem("email",data.user.email)
+      })
+  }
 
-  //     })
-  //     .catch((error) => {
-  //       // Handle error here
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       // The emails of the user´s account used
-  //       const email = error.customData.email;
-  //       // The AuthCredential type that was used
-
-  //     });
-  // };
-
-  // When the data sent to the backend is incorrect, invoke alert
-  // useEffect(() => {
-  //   if (store.errorAuth) {
-  //     actions.notify("Incorrect email or password");
-  //     actions.errorAuth();
-  //   }
-  // }, [store.errorAuth]);
+  useEffect(()=>{
+      setValue(localStorage.getItem('email'))
+  })
 
   return (
     <>
@@ -91,13 +77,11 @@ export const Login = () => {
                 <button onClick={handleSubmit} className="boton-registro mb-2">
                   Access
                 </button>
-                <button
-                  // onClick={signInWithPopUp}
-                  className="boton-registro mb-2"
-                >
-                  <i className="fab fa-google me-2"> </i>
-                  Access with Google
-                </button>
+                <div className='max-w-[240px] m-auto'>
+                  {value?<Home/>:
+                   <GoogleButton  onClick={handleGoogleSignIn} />
+                  };
+                </div>
                 <Link
                   to={"/passwordRecovery"}
                   className="text-center buttons-login"

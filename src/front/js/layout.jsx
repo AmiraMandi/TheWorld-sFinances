@@ -37,8 +37,6 @@ const Layout = () => {
         <ScrollToTop>
         <Brand  />
         <Navbar1 />
-        
-        
         {/* <StockMarketWidget/> */}
           <Routes>
             <Route element={<Home />} path="/home" />
@@ -57,11 +55,8 @@ const Layout = () => {
             <Route element={<h1>Not found!</h1>} />
             <Route element={<h1>Not found!</h1>} />
             <Route element={<h1>Not found!</h1>} /><Route element={<h1>Not found!</h1>} />
-           
           </Routes>
-
            <NewsCards/>
-          <Footer />
         {/* <Advertisers /> */}
         </ScrollToTop>
       </BrowserRouter>

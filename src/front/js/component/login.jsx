@@ -78,7 +78,7 @@ export const Login = () => {
                   Access
                 </button>
                 <div className='max-w-[240px] m-auto'>
-                  {value?<Home/>:
+                  {value?<Navigate to={"/home"}/>:
                    <GoogleButton  onClick={handleGoogleSignIn} />
                   };
                 </div>

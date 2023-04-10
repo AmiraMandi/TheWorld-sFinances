@@ -7,7 +7,7 @@ import WF from '../../../../1.png'
 
 export const Footer = () => (
 
-	<footer className="bg-dark text-white pt-5 pb-4">
+	<footer className="bg-dark text-white pb-4">
 		<div className='container text-center text-md-left'>
 			<div className='row text-center text-md-left'>
 				<div className='col-sm-3 col-md-3 col-lg-3 col-xl-3 mx-auto mt-3'>
@@ -27,21 +27,6 @@ export const Footer = () => (
 					</p>
 				
 				</div>
-				{/* <div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
-					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>About us</h5>
-					<p>
-						<a href="#" className='text-white' >Contact us</a>
-					</p>
-					<p>
-						<a href="#" className='text-white' >provedores</a>
-					</p>
-					<p>
-						<a href="#" className='text-white' >provedores</a>
-					</p>
-					<p>
-						<a href="#" className='text-white' >provedores</a>
-					</p>
-				</div> */}
 				<div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
 					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>About us</h5>
 					<p>
@@ -58,7 +43,7 @@ export const Footer = () => (
 					</p>
 				</div>
 			</div>
-			<hr className='mb-4' />
+			<hr className='mb-2' />
 			<div className='row aling-items-center'>
 				<div className='col-sm-7 col-md-7 col-lg-7 col-xl-7 '>
 					<p>© 2023 Copyright all right reserved by:

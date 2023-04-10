@@ -80,7 +80,7 @@ export const Login = () => {
                 <div className='max-w-[240px] m-auto'>
                   {value?<Home/>:
                    <GoogleButton  onClick={handleGoogleSignIn} />
-                  };
+                  }
                 </div>
                 <Link
                   to={"/passwordRecovery"}

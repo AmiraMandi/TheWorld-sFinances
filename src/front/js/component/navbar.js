@@ -16,7 +16,7 @@ export const Navbar1 = () => {
     actions.getNews(keywords)
   }
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -145,29 +145,39 @@ export const Navbar1 = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Crypto
+                WEB3
               </Link>
               <ul className="dropdown-menu">
+              <li>
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto','blockchain')} to="/web3/crypto">
+                    Crypto
+                  </Link>
+                </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('decentralized finance')} to="/crypto/decentralizedfinance">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('decentralized finance')} to="/web3/decentralizedfinance">
                     Decentralized Finance
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('NFT')} to="/crypto">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('NFT')} to="/web3/nft">
                     NFT
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto', 'regulation')} to="/crypto">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto', 'regulation')} to="/web3/Regulation">
                     Regulation
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto games')} to="/web3/cryptogames">
+                    Crypto games
                   </Link>
                 </li>
               </ul>
             </li>
           </ul>
           <Link to="/login">
-            <Button variant="dark">Sign In
+            <Button variant="dark" className="sing-in">Sign In
             </Button>
           </Link>
 

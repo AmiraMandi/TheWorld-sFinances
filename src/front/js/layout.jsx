@@ -21,7 +21,7 @@ import { Advertisers} from "./component/Advertiser.jsx"
 import { Brand } from "./component/brand.jsx";
 import '../styles/footer.css'
 import {DecentralizedFinances} from "./pages/Decentralized Finance.jsx"
-
+import { Crypto } from "./pages/cryptoview.jsx";
 
 //create your first component
 const Layout = () => {
@@ -38,8 +38,8 @@ const Layout = () => {
         <Brand  />
         <Navbar1 />
         
-        <CryptoWidget/>
-        <StockMarketWidget/>
+        
+        {/* <StockMarketWidget/> */}
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
@@ -50,8 +50,8 @@ const Layout = () => {
             <Route element={<WidgetForex />} path="/finance/coinvalue" />
             <Route element={<EconomyCalendarWidget />} path="finance/economiccalendar" />
             <Route element={<WidgetForex />} path="finance/coinvalue" />
-            <Route element={<DecentralizedFinances/>} path="crypto/decentralizedfinance"/>
-            <Route element={<h1>Not found!</h1>} />
+            <Route element={<DecentralizedFinances/>} path="web3/decentralizedfinance"/>
+            <Route element={<Crypto/>} path="web3/crypto" />
             <Route element={<h1>Not found!</h1>} />
             <Route element={<h1>Not found!</h1>} />
             <Route element={<h1>Not found!</h1>} />
@@ -59,7 +59,8 @@ const Layout = () => {
             <Route element={<h1>Not found!</h1>} /><Route element={<h1>Not found!</h1>} />
            
           </Routes>
-           {/* <NewsCards/> */}
+
+           <NewsCards/>
           <Footer />
         {/* <Advertisers /> */}
         </ScrollToTop>

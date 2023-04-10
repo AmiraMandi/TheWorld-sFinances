@@ -10,7 +10,7 @@ export const Registro = () => {
   const { store, actions } = useContext(Context);
 
   /* Utilizo useState donde asigno valores de los input*/
-  const [nombre, setNombre] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
@@ -19,26 +19,29 @@ export const Registro = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      nombre !== "" &&
-      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
+
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email) &&
       password !== "" &&
       password === passwordRepeat
     ) {
-      actions.registro(nombre, email, password);
+      actions.registro(email, password);
     } else {
-      actions.notify(
-        "Completa todos los campos de forma correcta, recuerda que nombre solo puede contener letras"
-      );
+      // actions.notify(
+      //   "Completa todos los campos de forma correcta, recuerda que nombre solo puede contener letras"
+      // );
     }
   };
 
+  // useEffect(() => {
+  //   if (store.registroError) {
+  //     actions.notifyError("Error al realizar el registro");
+  //     actions.registroErrorReset();
+  //   }
+  // }, [store.registroError]);
+
   useEffect(() => {
-    if (store.registroError) {
-      actions.notifyError("Error al realizar el registro");
-      actions.registroErrorReset();
-    }
-  }, [store.registroError]);
+    console.log("registro", store.registro);
+  }, [store.registro])
 
   return (
     <>
@@ -52,15 +55,7 @@ export const Registro = () => {
               className="formulario-registro col-9 my-auto"
             >
               <h2 className="titulo-registro text-center"> Registro </h2>
-              <input
-                type="text"
-                className="input-registro"
-                id="nombre"
-                placeholder="Escribe tu nombre completo"
-                onChange={(e) => setNombre(e.target.value)}
-                /** Asigno el valor con onChange a la variable nombre */
-                value={nombre}
-              />
+
               <input
                 type="email"
                 className="input-registro"

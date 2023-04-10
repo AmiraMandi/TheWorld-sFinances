@@ -23,167 +23,162 @@ const getState = ({
             userInfo: null,
             token: null,
         },
-        actions: {
-            // Alerts
-            notify: (mensaje) =>
-                toast.warn(mensaje, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    transition: Zoom,
-                }),
+        // actions: {
+        //     // Alerts
+        //     notify: (mensaje) =>
+        //         toast.warn(mensaje, {
+        //             position: "bottom-center",
+        //             autoClose: 5000,
+        //             hideProgressBar: false,
+        //             closeOnClick: true,
+        //             pauseOnHover: true,
+        //             draggable: true,
+        //             progress: undefined,
+        //             transition: Zoom,
+        //         }),
 
-            notifyOk: (mensaje) =>
-                toast.info("🦄 " + mensaje, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    transition: Zoom,
-                }),
+        //     notifyOk: (mensaje) =>
+        //         toast.info("🦄 " + mensaje, {
+        //             position: "bottom-center",
+        //             autoClose: 5000,
+        //             hideProgressBar: false,
+        //             closeOnClick: true,
+        //             pauseOnHover: true,
+        //             draggable: true,
+        //             progress: undefined,
+        //             transition: Zoom,
+        //         }),
 
-            notifyError: (mensaje) =>
-                toast.error(mensaje, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    transition: Zoom,
-                }),
+        //     notifyError: (mensaje) =>
+        //         toast.error(mensaje, {
+        //             position: "bottom-center",
+        //             autoClose: 5000,
+        //             hideProgressBar: false,
+        //             closeOnClick: true,
+        //             pauseOnHover: true,
+        //             draggable: true,
+        //             progress: undefined,
+        //             transition: Zoom,
+        //         }),
 
-            // Reinicio valor errorNoLogin a false
-            errorNoLogin: (reset = false) => {
-                if (reset) {
-                    // Reinicio valor errorNoLogin a false
-                    setStore({
-                        errorNoLogin: false,
-                    });
-                } else {
-                    setStore({
-                        errorNoLogin: true,
-                    });
-                }
-            },
+        //     // Reinicio valor errorNoLogin a false
+        //     errorNoLogin: (reset = false) => {
+        //         if (reset) {
+        //             // Reinicio valor errorNoLogin a false
+        //             setStore({
+        //                 errorNoLogin: false,
+        //             });
+        //         } else {
+        //             setStore({
+        //                 errorNoLogin: true,
+        //             });
+        //         }
+        //     },
 
-            // Reinicio valor emailOk a false
-            emailOkReset: () => {
-                setStore({
-                    mailOk: false,
-                });
-            },
+        //     // Reinicio valor emailOk a false
+        //     emailOkReset: () => {
+        //         setStore({
+        //             mailOk: false,
+        //         });
+        //     },
 
-            // Reinicio valor emailError a false
-            emailErrorReset: () => {
-                setStore({
-                    mailError: false,
-                });
-            },
+        //     // Reinicio valor emailError a false
+        //     emailErrorReset: () => {
+        //         setStore({
+        //             mailError: false,
+        //         });
+        //     },
 
-            // Recuperacion de Password mediante correo electrónico
-            RecuperacionPassword: async (email) => {
-                const options = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                    }),
-                };
-                try {
-                    const response = await fetch(
-                        process.env.BACKEND_URL + "/api/recuperarPassword",
-                        options
-                    );
-                    if (response.status === 200) {
-                        setStore({
-                            mailOk: true,
-                        });
-                    } else {
-                        setStore({
-                            mailError: true,
-                        });
-                    }
-                } catch (error) {
-                    console.log(error);
-                    setStore({
-                        mailError: true,
-                    });
-                }
-            },
+        // // Recuperacion de Password mediante correo electrónico
+        // RecuperacionPassword: async (email) => {
+        //     const options = {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({
+        //             email: email,
+        //         }),
+        //     };
+        //     try {
+        //         const response = await fetch(
+        //             process.env.BACKEND_URL + "/api/recuperarPassword",
+        //             options
+        //         );
+        //         if (response.status === 200) {
+        //             setStore({
+        //                 mailOk: true,
+        //             });
+        //         } else {
+        //             setStore({
+        //                 mailError: true,
+        //             });
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //         setStore({
+        //             mailError: true,
+        //         });
+        //     }
+        // },
 
-            // Reinicio valor registroError a false
-            registroErrorReset: () => {
-                setStore({
-                    registroError: false,
-                });
-            },
+        //     // Reinicio valor registroError a false
+        //     registroErrorReset: () => {
+        //         setStore({
+        //             registroError: false,
+        //         });
+        //     },
 
-            // Registro
-            registro: async (nombre, email, password, artista) => {
-                const options = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        nombre: nombre,
-                        email: email,
-                        password: password,
-                        artista: artista,
-                        nacimiento: null,
-                        foto_usuario: null,
-                        descripcion: null,
-                    }),
-                };
-                try {
-                    // fetching data from the backend
-                    const response = await fetch(
-                        process.env.BACKEND_URL + "/api/registration",
-                        options
-                    );
-                    if (response.status === 200) {
-                        setStore({
-                            registro: true,
-                        });
-                    }
-                    const data = await response.json();
-                    setStore({
-                        registro: false,
-                    });
-                } catch (error) {
-                    console.log(error);
-                    setStore({
-                        registroError: true,
-                    });
-                }
-            },
+        //     // Registro
+        //     registro: async (email, password) => {
+        //         const options = {
+        //             method: "POST",
+        //             headers: {
+        //                 "Content-Type": "application/json",
+        //             },
+        //             body: JSON.stringify({
+        //                 email: email,
+        //                 password: password,
+        //             }),
+        //         };
+        //         try {
+        //             // fetching data from the backend
+        //             const response = await fetch(
+        //                 process.env.BACKEND_URL + "/api/signup",
+        //                 options
+        //             );
+        //             if (response.status === 200) {
+        //                 setStore({
+        //                     registro: true,
+        //                 });
+        //             }
+        //             const data = await response.json();
+        //             setStore({
+        //                 registro: false,
+        //             });
+        //         } catch (error) {
+        //             console.log(error);
+        //             setStore({
+        //                 registroError: true,
+        //             });
+        //         }
+        //     },
 
-            news: [],
-            message: null,
-            // demo: [
-            //   {
-            //     title: "FIRST",
-            //     background: "white",
-            //     initial: "white",
-            //   },
-            //   {
-            //     title: "SECOND",
-            //     background: "white",
-            //     initial: "white",
-            //   },
-            // ],
-        },
+        //     news: [],
+        //     message: null,
+        //     // demo: [
+        //     //   {
+        //     //     title: "FIRST",
+        //     //     background: "white",
+        //     //     initial: "white",
+        //     //   },
+        //     //   {
+        //     //     title: "SECOND",
+        //     //     background: "white",
+        //     //     initial: "white",
+        //     //   },
+        //     // ],
+        // },
         actions: {
             // Use getActions to call a function within a fuction
             // exampleFunction: () => {
@@ -222,7 +217,76 @@ const getState = ({
             //   const data = await response.pagination.json();
             //   console.log(data)
             //   setStore({news: data});
+
             // },
+
+            registro: async (email, password) => {
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                    }),
+                };
+                try {
+                    // fetching data from the backend
+                    const response = await fetch(
+                        process.env.BACKEND_URL + "/api/signup",
+                        options
+                    );
+                    if (response.status === 200) {
+                        setStore({
+                            registro: true,
+                        });
+                    }
+                    // const data = await response.json();
+                    // setStore({
+                    //     registro: false,
+                    // });
+                } catch (error) {
+                    console.log(error);
+                    setStore({
+                        registroError: true,
+                    });
+                }
+            },
+
+            // Recuperacion de Password mediante correo electrónico
+            RecuperacionPassword: async (email) => {
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                    }),
+                };
+                try {
+                    const response = await fetch(
+                        process.env.BACKEND_URL + "/api/recuperarPassword",
+                        options
+                    );
+                    if (response.status === 200) {
+                        setStore({
+                            mailOk: true,
+                        });
+                    } else {
+                        setStore({
+                            mailError: true,
+                        });
+                    }
+                } catch (error) {
+                    console.log(error);
+                    setStore({
+                        mailError: true,
+                    });
+                }
+            },
+
             getNews: async (keywords) => {
                 //To-DO: Definir dentro del requestOptions un body donde pueda pasar un parámetro "category" que vaya a recibir el back. Si no recibe ninguno, enviarlo vacío o por default(general)
                 let requestOptions = {

@@ -6,7 +6,9 @@ let tipos2= ["EUR","USD","JPY","GBP","CHF","AUD","CAD","NZD","CNY","TRY","SEK","
 export const WidgetForex = () => {
     return (
         <div className="container-fluid">
+            <br />
             <h1 className="d-flex justify-content-center">Coin Values</h1>
+            <br />
           <ForexCrossRates colorTheme="light" width="100%" height="1000" currencies={tipos2} ></ForexCrossRates>  
         </div>
         

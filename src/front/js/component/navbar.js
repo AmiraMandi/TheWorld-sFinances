@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
@@ -16,7 +16,7 @@ export const Navbar1 = () => {
     actions.getNews(keywords)
   }
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -58,53 +58,53 @@ export const Navbar1 = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('coin value')} to="/finance">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('coin value')} to="/finance/coinvalue">
                     Coin Values
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" onClick={() => handleKeywordSelect('trade')} to="/finance">
                     Trade
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" onClick={() => handleKeywordSelect('primary goods')} to="/finance">
                     Primary Goods
                   </Link>
                 </li>
-				<li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('economy calendar')} to="/finance">
+                <li>
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('economy calendar')} to="finance/economiccalendar">
                     Economy Calendar
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" onClick={() => handleKeywordSelect('ecosustainable')} to="/finance">
                     Eco-sustainable business
                   </Link>
                 </li>
-				<li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('tax','spend')} to="/finance">
+                <li>
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('tax', 'spend')} to="/finance">
                     Taxes and spend
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" onClick={() => handleKeywordSelect('deals')} to="/finance">
                     Deals
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" onClick={() => handleKeywordSelect('speculation')} to="/finance">
                     Speculation
                   </Link>
                 </li>
-				<li>
+                <li>
                   <Link className="dropdown-item" onClick={() => handleKeywordSelect('property costs')} to="/finance">
                     Property Costs
                   </Link>
                 </li>
               </ul>
             </li>
-			<li className="nav-item dropdown">
+            <li className="nav-item dropdown">
               <Link
                 className="nav-link dropdown-toggle"
                 to="#"
@@ -131,7 +131,7 @@ export const Navbar1 = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('AI','Artificial Intelligence')} to="/technology">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('AI', 'Artificial Intelligence')} to="/technology">
                     Artificial Intelligence
                   </Link>
                 </li>
@@ -145,36 +145,46 @@ export const Navbar1 = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Crypto
+                WEB3
               </Link>
               <ul className="dropdown-menu">
+              <li>
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto','blockchain')} to="/web3/crypto">
+                    Crypto
+                  </Link>
+                </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('decentralized finance')} to="/crypto">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('decentralized finance')} to="/web3/decentralizedfinance">
                     Decentralized Finance
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('NFT')} to="/crypto">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('NFT')} to="/web3/nft">
                     NFT
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto', 'regulation')} to="/crypto">
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto', 'regulation')} to="/web3/Regulation">
                     Regulation
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" onClick={() => handleKeywordSelect('crypto games')} to="/web3/cryptogames">
+                    Crypto games
                   </Link>
                 </li>
               </ul>
             </li>
           </ul>
           <Link to="/login">
-                    <Button variant="dark">Sign In
-                    </Button>
+            <Button variant="dark" className="sing-in">Sign In
+            </Button>
           </Link>
-         
 
-          </div>
+
         </div>
-      </nav>
+      </div>
+    </nav>
   );
 };
 

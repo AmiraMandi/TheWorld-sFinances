@@ -18,12 +18,12 @@ import { TTStock } from "./component/Widgets/TikerTapeStock.jsx"
 import { Login } from "./component/login.jsx";
 import { RecuperacionPassword } from "./component/recuperacionpassword.jsx";
 import { Registro } from "./component/registro.jsx";
-import { Advertisers} from "./component/Advertiser.jsx"
+import { Advertisers} from "./pages/Advertiser.jsx"
 import { Brand } from "./component/brand.jsx";
 import '../styles/footer.css'
 import {DecentralizedFinances} from "./pages/Decentralized Finance.jsx"
 import { Crypto } from "./pages/cryptoview.jsx";
-
+import {Suggestion} from './pages/suggestionbox.jsx'
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -51,8 +51,8 @@ const Layout = () => {
             <Route element={<DecentralizedFinances/>} path="web3/decentralizedfinance"/>
             <Route element={<Crypto/>} path="web3/crypto" />
             <Route element={<TermsandConditions />}  path="termsandconditions"/>
-            <Route element={<h1>Not found!</h1>} />
-            <Route element={<h1>Not found!</h1>} />
+            <Route element={<Advertisers/>} path="adversitisers" />
+            <Route element={<Suggestion/>} path='suggestionbox'/>
             <Route element={<h1>Not found!</h1>} />
             <Route element={<h1>Not found!</h1>} /><Route element={<h1>Not found!</h1>} />
           </Routes>

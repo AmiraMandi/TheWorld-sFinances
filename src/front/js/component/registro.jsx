@@ -58,7 +58,7 @@ export const Registro = () => {
                 type="email"
                 className="input-registro"
                 id="email"
-                placeholder="Write your email (name@gmail.com)"
+                placeholder="Enter your email (name@gmail.com)"
                 onChange={(e) =>
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
@@ -68,7 +68,7 @@ export const Registro = () => {
                 type="password"
                 className="input-registro"
                 id="password"
-                placeholder="Create a password"
+                placeholder="Enter your password"
                 onChange={(e) =>
                   setPassword(e.target.value)
                 } /** Asigno el valor con onChange a la variable nombre */
@@ -82,6 +82,7 @@ export const Registro = () => {
                 onChange={(e) =>
                   setPasswordRepeat(e.target.value)
                 } /** Asigno el valor con onChange a la variable nombre */
+                
                 value={passwordRepeat}
               />
               <div className="form-check">
@@ -93,15 +94,13 @@ export const Registro = () => {
               </div>
               <div className="col-12 pl-2 d-flex justify-content-end my-2">
                 <Link to="/login">
-                  <button className="boton-registro me-2"> Back </button>
+                  <button className="boton-registro me-2"> Return </button>
                 </Link>
                 <button className="boton-registro"> Create an Account </button>
+
               </div>
             </form>
           </div>
-          {/* <div> */}
-          {/* <Alert /> */}
-          {/* </div> */}
         </div>
       )}
     </>

@@ -15,11 +15,9 @@ export const Registro = () => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email) &&
       password !== "" &&
       password === passwordRepeat
@@ -41,7 +39,7 @@ export const Registro = () => {
 
   useEffect(() => {
     console.log("registro", store.registro);
-  }, [store.registro])
+  }, [store.registro]);
 
   return (
     <>
@@ -54,13 +52,13 @@ export const Registro = () => {
               onSubmit={handleSubmit}
               className="formulario-registro col-9 my-auto"
             >
-              <h2 className="titulo-registro text-center"> Registro </h2>
+              <h2 className="titulo-registro text-center"> Register </h2>
 
               <input
                 type="email"
                 className="input-registro"
                 id="email"
-                placeholder="Introduce tu email (name@gmail.com)"
+                placeholder="Write your email (name@gmail.com)"
                 onChange={(e) =>
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
@@ -70,7 +68,7 @@ export const Registro = () => {
                 type="password"
                 className="input-registro"
                 id="password"
-                placeholder="Introduce un password"
+                placeholder="Create a password"
                 onChange={(e) =>
                   setPassword(e.target.value)
                 } /** Asigno el valor con onChange a la variable nombre */
@@ -80,25 +78,24 @@ export const Registro = () => {
                 type="password"
                 className="input-registro"
                 id="password-repeat"
-                placeholder="Repite Password"
+                placeholder="Confirm password"
                 onChange={(e) =>
                   setPasswordRepeat(e.target.value)
                 } /** Asigno el valor con onChange a la variable nombre */
                 value={passwordRepeat}
               />
               <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  onChange={(e) => handleInputChange(e)}
-                />
-
+                <input id="checkbox" type="checkbox" />
+                <label for="checkbox">
+                  {" "}
+                  I agree to these <a href="termsandconditions">Terms and Conditions</a>.
+                </label>
               </div>
               <div className="col-12 pl-2 d-flex justify-content-end my-2">
                 <Link to="/login">
-                  <button className="boton-registro me-2"> Volver </button>
+                  <button className="boton-registro me-2"> Back </button>
                 </Link>
-                <button className="boton-registro"> Crear Cuenta </button>
+                <button className="boton-registro"> Create an Account </button>
               </div>
             </form>
           </div>

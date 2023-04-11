@@ -24,7 +24,7 @@ export const Navbar1 = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div className="container-fluid">
         <button
-          className="navbar-toggler"
+          className="navbar-toggler collapsed"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -32,7 +32,9 @@ export const Navbar1 = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="toggler-icon top-bar"></span>
+          <span className="toggler-icon middle-bar"></span>
+          <span className="toggler-icon bottom-bar"></span>
         </button>
         <div className="collapse navbar-collapse mx-auto" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">

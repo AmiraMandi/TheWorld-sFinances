@@ -2,7 +2,8 @@ import React from "react";
 
 export const TermsandConditions = () => {
   return (
-    <div>
+    
+    <div className="container">
       <h2>
         <strong>Terms and Conditions</strong>
       </h2>

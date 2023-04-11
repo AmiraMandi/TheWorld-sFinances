@@ -1,10 +1,10 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint, current_app
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app 
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from flask_limiter import Limiter
-from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites
+from api.models import db, User, Reader, News, Keyword, KeywordsFavorites, NewsFavorites, Advertisers, Widget, WidgetFavorites, SuggestionBox 
 from api.utils import generate_sitemap, APIException
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -12,8 +12,9 @@ import json, bcrypt
 import re
 import requests
 
-# limiter = Limiter(app, key_func=get_remote_address)
-# limiter.init_app(app)
+
+# limiter = Limiter(api, key_func=get_remote_address)
+# limiter.init_api(api)
 
 
 api = Flask(__name__)
@@ -574,3 +575,55 @@ def get_newsmediastack():
 
 
 
+# CREATE
+@api.route('/suggestions', methods=['POST'])
+def create_suggestion():
+    data = request.get_json()
+    new_suggestion = SuggestionBox(fullName=data['fullName'], email=data['email'], Suggestion=data['Suggestion'])
+    db.session.add(new_suggestion)
+    db.session.commit()
+    return jsonify(new_suggestion.serialize()), 201
+
+# READ ALL
+@api.route('/suggestions', methods=['GET'])
+def get_all_suggestions():
+    suggestions = SuggestionBox.query.all()
+    return jsonify([suggestion.serialize() for suggestion in suggestions]), 200
+
+# READ ONE
+@api.route('/suggestions/<int:suggestion_id>', methods=['GET'])
+def get_suggestion(suggestion_id):
+    suggestion = SuggestionBox.query.get(suggestion_id)
+    if suggestion:
+        return jsonify(suggestion.serialize()), 200
+    else:
+        return jsonify({"message": "Suggestion not found."}), 404
+
+# UPDATE
+@api.route('/suggestions/<int:suggestion_id>', methods=['PUT'])
+def update_suggestion(suggestion_id):
+    suggestion = SuggestionBox.query.get(suggestion_id)
+    if suggestion:
+        data = request.get_json()
+        suggestion.fullName = data.get('fullName', suggestion.fullName)
+        suggestion.email = data.get('email', suggestion.email)
+        suggestion.Suggestion = data.get('Suggestion', suggestion.Suggestion)
+        db.session.commit()
+        return jsonify(suggestion.serialize()), 200
+    else:
+        return jsonify({"message": "Suggestion not found."}), 404
+
+# DELETE
+@api.route('/suggestions/<int:suggestion_id>', methods=['DELETE'])
+def delete_suggestion(suggestion_id):
+    suggestion = SuggestionBox.query.get(suggestion_id)
+    if suggestion:
+        db.session.delete(suggestion)
+        db.session.commit()
+        return jsonify({"message": "Suggestion deleted."}), 200
+    else:
+        return jsonify({"message": "Suggestion not found."}), 404
+
+if __name__ == '__main__':
+    db.create_all()
+    api.run(debug=True)

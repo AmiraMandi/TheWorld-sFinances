@@ -545,7 +545,7 @@ def recuperarPassword():
 # Mediastack GET
 @api.route('/newsmediastack', methods=['GET'])
 def get_newsmediastack():
-    # url = 'http://api.mediastack.com/v1/news?access_key=4a32d807e8f096e6c57661d4576ea097'
+    url = 'http://api.mediastack.com/v1/news?access_key=4a32d807e8f096e6c57661d4576ea097'
     category = request.args.get('category', default='business')
     keywords = request.args.get('keywords', default='')
     print("las categorias", category)

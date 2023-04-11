@@ -5,6 +5,7 @@ import { Home } from "./pages/home";
 import { NewsCards } from "./component/NewsCards.jsx"
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
+import { TermsandConditions} from "./pages/TermsandConditions.js";
 import injectContext from "./store/appContext";
 import { Navbar1 } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -49,6 +50,7 @@ const Layout = () => {
             <Route element={<WidgetForex />} path="finance/coinvalue" />
             <Route element={<DecentralizedFinances/>} path="web3/decentralizedfinance"/>
             <Route element={<Crypto/>} path="web3/crypto" />
+            <Route element={<TermsandConditions />}  path="termsandconditions"/>
             <Route element={<Advertisers/>} path="adversitisers" />
             <Route element={<Suggestion/>} path='suggestionbox'/>
             <Route element={<h1>Not found!</h1>} />

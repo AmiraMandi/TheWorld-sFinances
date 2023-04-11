@@ -25,3 +25,10 @@
     font-size: 20px;
     font-family: 'Noto Serif Display', serif;
 }
+
+.btn.btn-darck.text-white {
+    padding-right: 30px;
+    padding-left: 0;
+    font-size: 20px;
+    font-family: 'Noto Serif Display', serif;
+}

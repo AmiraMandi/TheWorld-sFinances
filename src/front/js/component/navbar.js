@@ -180,18 +180,18 @@ export const Navbar1 = () => {
                 </li>
               </ul>
             </li>
+            
           </ul>
           <Link to="/login">
             <Button variant="dark" className="sing-in">Sign In
             </Button>
           </Link>
+          <button className="btn btn-darck text-white" onClick={logout}>Logout</button>
           <div>
-            <h1>Home Page</h1>
-            <button onClick={logout}>Logout</button>
+
+            
         </div>
     
-
-
         </div>
       </div>
     </nav>

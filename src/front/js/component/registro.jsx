@@ -60,7 +60,7 @@ export const Registro = () => {
                 type="email"
                 className="input-registro"
                 id="email"
-                placeholder="Introduce tu email (name@gmail.com)"
+                placeholder="Enter your email (name@gmail.com)"
                 onChange={(e) =>
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
@@ -70,7 +70,7 @@ export const Registro = () => {
                 type="password"
                 className="input-registro"
                 id="password"
-                placeholder="Introduce un password"
+                placeholder="Enter your password"
                 onChange={(e) =>
                   setPassword(e.target.value)
                 } /** Asigno el valor con onChange a la variable nombre */
@@ -80,31 +80,19 @@ export const Registro = () => {
                 type="password"
                 className="input-registro"
                 id="password-repeat"
-                placeholder="Repite Password"
+                placeholder="Confirm password"
                 onChange={(e) =>
                   setPasswordRepeat(e.target.value)
                 } /** Asigno el valor con onChange a la variable nombre */
-                value={passwordRepeat}
-              />
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  onChange={(e) => handleInputChange(e)}
-                />
-
-              </div>
+                value={passwordRepeat}/>
               <div className="col-12 pl-2 d-flex justify-content-end my-2">
                 <Link to="/login">
-                  <button className="boton-registro me-2"> Volver </button>
+                  <button className="boton-registro me-2"> Return </button>
                 </Link>
-                <button className="boton-registro"> Crear Cuenta </button>
+                <button className="boton-registro">Create an account </button>
               </div>
             </form>
           </div>
-          {/* <div> */}
-          {/* <Alert /> */}
-          {/* </div> */}
         </div>
       )}
     </>

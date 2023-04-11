@@ -37,7 +37,6 @@ const Layout = () => {
         <ScrollToTop>
         <Brand  />
         <Navbar1 />
-        {/* <StockMarketWidget/> */}
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />

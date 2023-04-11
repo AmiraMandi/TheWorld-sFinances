@@ -7,6 +7,13 @@
     margin-top: 25px;
 }
 
-.Cardbody {
-    max-height: 800px;
+.Ctitle {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.Cdesciption {
+    margin-top: 15px;
+    padding-top: 10px;
 }

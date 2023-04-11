@@ -16,10 +16,10 @@ export const NewsCards = ({title}) => {
                 <Card.Img variant="top" src={article.image} />
 
               <Card.Body className='Cardbody'>
-                <Card.Title>{article.title}</Card.Title>
-                <Card.Text>{article.description}</Card.Text>
+                <Card.Title className='Ctitle'>{article.title}</Card.Title>
+                <Card.Text className='Cdesciption'>{article.description}</Card.Text>
                 <Card.Text>{article.author}</Card.Text>
-                <Button variant="primary" href={article.url} target="_blank">Read more</Button>
+                <Button variant="info" href={article.url} target="_blank">Read more</Button>
               </Card.Body>
             </Card>
           </div>

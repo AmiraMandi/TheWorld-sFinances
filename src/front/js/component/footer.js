@@ -48,7 +48,7 @@ export const Footer = () => (
 				<div className='col-sm-7 col-md-7 col-lg-7 col-xl-7 '>
 					<p>© 2023 Copyright all right reserved by:
 						<a href="#">
-							<strong className='text-warning'>The World's Finances
+							<strong className='text-info'>The World's Finances
 							</strong>
 						</a>
 					</p>

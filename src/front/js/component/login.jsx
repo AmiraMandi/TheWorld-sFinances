@@ -82,12 +82,6 @@ export const Login = () => {
                    <GoogleButton  onClick={handleGoogleSignIn} />
                   }
                 </div>
-                <Link
-                  to={"/passwordRecovery"}
-                  className="text-center buttons-login"
-                >
-                  Forgot your password? Recover it
-                </Link>
                 <Link to={"/registration"} className="text-center buttons-login">
                   Don't have an account? Register
                 </Link>

@@ -203,7 +203,6 @@ class Advertisers(db.Model):
             "name": self.name,
             "last_name":self.last_name,
             "company": self.company,
-            "comany_address":self.company_address,
-            "CIF_NIF":self.CIF_NIF,
-            "company": self.company}
+            "company_address":self.company_address,
+            "CIF_NIF":self.CIF_NIF}
 

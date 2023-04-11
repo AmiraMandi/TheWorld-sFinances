@@ -8,8 +8,7 @@
     top: 100%
 }
 
-.list-inline-item {
-    padding-right: 40px;
+.list-group {
     font-size: 25px;
     flex-wrap: wrap;
 }

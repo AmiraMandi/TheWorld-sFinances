@@ -15,6 +15,11 @@ export const Navbar1 = () => {
   const handleKeywordSelect = (keywords) => {
     actions.getNews(keywords)
   }
+
+  const logout =()=>{
+    localStorage.clear()
+    window.location.reload()
+}
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div className="container-fluid">
@@ -180,6 +185,11 @@ export const Navbar1 = () => {
             <Button variant="dark" className="sing-in">Sign In
             </Button>
           </Link>
+          <div>
+            <h1>Home Page</h1>
+            <button onClick={logout}>Logout</button>
+        </div>
+    
 
 
         </div>

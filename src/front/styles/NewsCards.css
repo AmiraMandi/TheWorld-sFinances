@@ -1,0 +1,19 @@
+.container {
+    margin-top: 20px;
+
+}
+
+.card {
+    margin-top: 25px;
+}
+
+.Ctitle {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.Cdesciption {
+    margin-top: 15px;
+    padding-top: 10px;
+}

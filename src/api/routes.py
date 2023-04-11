@@ -511,7 +511,7 @@ def signup():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({'message': 'User created successfully'}), 201
+    return jsonify({'message': 'User created successfully'}), 200
 
 # restablecer contraseña por mail
 @api.route("/recuperarPassword", methods=["POST"])

@@ -4,10 +4,9 @@ import { auth, provider } from "../store/firebase";
 import { signInWithPopup } from "firebase/auth";
 import "../../styles/registro.css";
 import { GoogleButton } from 'react-google-button';
-
 import { Context } from "../store/appContext";
-
 export const Login = () => {
+
   const { store, actions } = useContext(Context);
   // actions.displayOff(true);
   /* Utilizo useState donde asigno valores de los input*/
@@ -17,6 +16,11 @@ export const Login = () => {
   /** Compruebo que los campos no se encuentren vacios, si estan completos, mando datos a metodo login en flux
    * si no es asi salta un alert que indica al usuario que debe rellenar los campos del formulario login
    */
+
+  useEffect(()=>{
+    actions.displayOffNews();
+
+   },[])
 
   const handleSubmit = (e) => {
     e.preventDefault();

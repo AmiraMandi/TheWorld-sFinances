@@ -9,3 +9,11 @@
     object-fit: contain;
 
 }
+
+.sing-in {
+    margin-bottom: 5px;
+}
+
+.btn.btn-darck.text-white {
+    margin-bottom: 5px;
+}

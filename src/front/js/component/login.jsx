@@ -79,7 +79,7 @@ export const Login = () => {
                 </button>
                 <div className='max-w-[240px] m-auto'>
                   {value?<Navigate to={"/home"}/>:
-                   <GoogleButton  onClick={handleGoogleSignIn} />
+                   <GoogleButton className="google"  onClick={handleGoogleSignIn} />
                   }
                 </div>
                 <Link to={"/registration"} className="text-center buttons-login">

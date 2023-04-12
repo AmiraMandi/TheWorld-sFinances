@@ -87,7 +87,7 @@ export const Registro = () => {
               />
               <div className="form-check">
                 <input id="checkbox" type="checkbox" />
-                <label for="checkbox">
+                <label className="check" for="checkbox">
                   {" "}
                   I agree to these <a href="termsandconditions">Terms and Conditions</a>.
                 </label>

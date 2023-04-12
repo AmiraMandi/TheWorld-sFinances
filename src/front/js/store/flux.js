@@ -22,17 +22,14 @@ const getState = ({
             errorNoLogin: false,
             userInfo: null,
             token: null,
-            displayOffNews: false,
+            displayNews: true,
+            displayReadMe: false,
         },
         actions: {
-            // displayOff: (aux) => {
-            //     const store = getStore();
-            //     setStore({
-            //         displayOffNews: aux
-            //     });
-            // },
-
-
+            displayOffNews: () => {setStore({displayNews: false,});},
+            displayOnNews:  () => { setStore({displayNews: true,});},
+            displayOffReadMe: () => {setStore({displayReadMe: false,});},
+            displayOnReadMe:  () => { setStore({displayReadMe: true,});},
             registro: async (email, password) => {
                 const options = {
                     method: "POST",
@@ -159,5 +156,8 @@ const getState = ({
         },
     };
 };
+
+             // fetch suggestionbox
+            
 
 export default getState;

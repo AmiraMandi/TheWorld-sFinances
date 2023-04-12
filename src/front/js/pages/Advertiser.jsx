@@ -1,7 +1,15 @@
-import React,{useState} from 'react';
+
+import React, { useState, useContext, useEffect, useSyncExternalStore } from "react";
 import {Form, Button, FormGroup, FormLabel} from 'react-bootstrap';
+import { Context } from "../store/appContext";
 
 export const Advertisers =() => {
+  const { store, actions } = useContext(Context);
+
+  useEffect(()=>{
+    actions.displayOffNews();
+    
+   },[])
 
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
@@ -43,8 +51,6 @@ export const Advertisers =() => {
       }
       ADV(fullName,email,suggestion)
   }
-
-  
 
   return ( 
     <div className='container'>

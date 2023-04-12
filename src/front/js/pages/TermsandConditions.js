@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState, useContext, useEffect, useSyncExternalStore } from "react";
+import { Context } from "../store/appContext";
+
 
 export const TermsandConditions = () => {
+  const { store, actions } = useContext(Context);
+
+  useEffect(()=>{
+    actions.displayOffNews();
+    
+   },[])
   return (
     
     <div className="container">

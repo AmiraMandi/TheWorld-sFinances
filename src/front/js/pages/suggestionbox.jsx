@@ -1,7 +1,14 @@
-import React,{useState} from 'react';
+import React, { useState, useContext, useEffect, useSyncExternalStore } from "react";
 import { Form, Button, FormGroup, FormLabel } from 'react-bootstrap';
+import { Context } from "../store/appContext";
 
 export const Suggestion = () => {
+    const { store, actions } = useContext(Context);
+
+    useEffect(()=>{
+    actions.displayOffNews();
+    
+   },[])
 
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");

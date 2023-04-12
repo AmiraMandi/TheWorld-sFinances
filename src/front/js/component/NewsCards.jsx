@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { Card, Button } from 'react-bootstrap';
 import Logo from "../../../../public/worlds-finances-06.png"
 import "../../styles/NewsCards.css"
+import { Link } from 'react-router-dom';
 
 export const NewsCards = ({title}) => {
     const { store, actions } = useContext(Context);
@@ -19,7 +20,13 @@ export const NewsCards = ({title}) => {
                 <Card.Title className='Ctitle'>{article.title}</Card.Title>
                 <Card.Text className='Cdesciption'>{article.description}</Card.Text>
                 <Card.Text>{article.author}</Card.Text>
-                <Button variant="info" href={article.url} target="_blank">Read more</Button>
+                {store.token ?  
+                    <Button variant="info" href={article.url} target="_blank">Read more</Button> :
+                    <Link to="/login">
+                    <Button variant="warning">Register to read more</Button>
+                    </Link>
+                    
+                }
               </Card.Body>
             </Card>
           </div>

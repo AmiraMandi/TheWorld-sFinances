@@ -206,3 +206,21 @@ class Advertisers(db.Model):
             "company_address":self.company_address,
             "CIF_NIF":self.CIF_NIF}
 
+class SuggestionBox (db.Model):
+    __tablename__="suggestions"
+    id = db.Column(db.Integer, primary_key=True)
+    fullName = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    suggestion = db.Column(db.String(1000))
+        
+        
+    def __repr__(self):
+            return f'<SuggestionBox {self.id}>'
+
+    def serialize(self):
+            return {
+                "id":self.id,
+                "fullName":self.fullName,
+                "email":self.email,
+                "suggestion":self.suggestion
+            }

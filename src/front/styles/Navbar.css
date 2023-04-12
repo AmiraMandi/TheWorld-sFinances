@@ -17,8 +17,6 @@
     font-family: 'Noto Serif Display', serif;
 }
 
-
-
 .sing-in {
     padding-right: 30px;
     padding-left: 0;
@@ -32,6 +30,7 @@
     padding-left: 0;
     font-size: 20px;
     font-family: 'Noto Serif Display', serif;
+}
 
 .navbar-toggler {
     border: 0;
@@ -39,14 +38,13 @@
 }
 
 .navbar-toggler:focus,
-.navbar-toggler:active
-.navbar-toggler-icon:focus{
+.navbar-toggler:active .navbar-toggler-icon:focus {
     outline: none;
     box-shadow: none;
     border: 0;
 }
 
-.toggler-icon{
+.toggler-icon {
     width: 26px;
     height: 2px;
     background-color: #e74c3c;
@@ -54,39 +52,39 @@
     transition: all 0.4s;
 }
 
-.middle-bar{
+.middle-bar {
     margin: 5px auto;
 }
 
-.navbar-toggler .top-bar{
+.navbar-toggler .top-bar {
     transform: rotate(44deg);
     transform-origin: 10% 10%;
 }
 
-.navbar-toggler .middle-bar{
+.navbar-toggler .middle-bar {
     opacity: 0;
     filter: alpha(opacity=0);
 }
 
-.navbar-toggler .bottom-bar{
+.navbar-toggler .bottom-bar {
     transform: rotate(-44deg);
     transform-origin: 10% 10%;
 }
 
-.navbar-toggler.collapsed .top-bar{
+.navbar-toggler.collapsed .top-bar {
     transform: rotate(0);
 }
 
-.navbar-toggler.collapsed .middle-bar{
+.navbar-toggler.collapsed .middle-bar {
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
-.navbar-toggler.collapsed .bottom-bar{
+.navbar-toggler.collapsed .bottom-bar {
     transform: rotate(0);
 }
 
-.navbar-toggler.collapsed .toggler-icon{
+.navbar-toggler.collapsed .toggler-icon {
     background-color: #0dcaf0;
 
 }

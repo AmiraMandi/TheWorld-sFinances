@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useSyncExternalStore } from "react";
 import { Link, Navigate } from "react-router-dom"
 import { auth, provider } from "../store/firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -9,7 +9,7 @@ import { Context } from "../store/appContext";
 
 export const Login = () => {
   const { store, actions } = useContext(Context);
-
+  // actions.displayOff(true);
   /* Utilizo useState donde asigno valores de los input*/
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -47,10 +47,11 @@ export const Footer = () => (
 				<div className='col-sm-2 col-md-2 col-lg-2 col-xl-2 mx-auto mt-3'>
 					<h5 className='text-uppercase mb-4 font-weight-bold text-light'>About us</h5>
 					<p>
-						<i className='fas fa-home ml-3'></i>Calle Monegros 113, 43058
+						<i className='fas fa-home ml-3'></i> <p>Calle Monegros 113, 43058
+							</p> 
 					</p>
 					<p>
-						<i className='fas fa-envelope ml-3'></i>TheWorldFinances@
+						<i className='fas fa-envelope ml-3'></i> <p> TheWorldFinances@</p> 
 					</p>
 				</div>
 			</div>

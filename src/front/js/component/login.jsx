@@ -24,8 +24,7 @@ export const Login = () => {
     if (email !== "" && password !== "") {
       console.log("Hola")
       actions.login(email, password);
-      actions.displayOnNews();
-      actions.dispalyOnReadMe();
+      
     } else {
       actions.notify("Fill in all fields");
       console.log(password);

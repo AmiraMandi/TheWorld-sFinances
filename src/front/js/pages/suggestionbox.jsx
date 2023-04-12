@@ -9,9 +9,38 @@ export const Suggestion = () => {
  
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         //__fetch__
         //Blaquear todos los state setFullName(""),setEmail(""),setSuggestion("") 
+        const SuggestionBox  = async (fullName, email, suggestion) => {
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    fullName:fullName,
+                    email: email,
+                    suggestion: suggestion,
+                }),
+            };
+            try {
+                const resp = await fetch(
+                    process.env.BACKEND_URL + "/api/suggestions",
+                    options
+                );
+                if (resp.status === 200) {
+                    alert('petition OK')
+                }
+            } catch (error) {
+              alert('Error on the petition')
+            }
+            
+        }
+        SuggestionBox(fullName,email,suggestion)
     }
+
+
     return (
         <div className='container'>
             <Form onSubmit={(e)=>handleSubmit() }>

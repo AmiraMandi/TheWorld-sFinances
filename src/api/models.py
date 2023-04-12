@@ -187,6 +187,7 @@ class Advertisers(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('User.id'))
     name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(200),nullable=False)
     company = db.Column(db.String(100),nullable=False)
     company_address = db.Column(db.String(100) ,nullable=False)
     CIF_NIF = db.Column(db.String(100),nullable=True)
@@ -202,6 +203,7 @@ class Advertisers(db.Model):
             "user_id": self.user_id,
             "name": self.name,
             "last_name":self.last_name,
+            "email":self.email,
             "company": self.company,
             "company_address":self.company_address,
             "CIF_NIF":self.CIF_NIF}

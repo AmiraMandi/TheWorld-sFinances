@@ -1,7 +1,51 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {Form, Button, FormGroup, FormLabel} from 'react-bootstrap';
 
 export const Advertisers =() => {
+
+  const [name, setName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [company_address, setCompany_address] = useState("");
+  const [CIF_NIF, setCIFNIF] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+        const ADV  = async (name, last_name, email, company , company_address , CIF_NIF ) => {
+          const options = {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  name:name,
+                  last_name:last_name,
+                  email: email,
+                  company: company,
+                  company_address:company_address,
+                  CIF_NIF:CIF_NIF
+              }),
+          };
+          try {
+              const resp = await fetch(
+                  process.env.BACKEND_URL + "/api/suggestions",
+                  options
+              );
+              if (resp.status === 200) {
+                  alert('petition OK')
+              }
+          } catch (error) {
+            alert('Error on the petition')
+          }
+          
+      }
+      ADV(fullName,email,suggestion)
+  }
+
+  
+
   return ( 
     <div className='container'>
        <Form>

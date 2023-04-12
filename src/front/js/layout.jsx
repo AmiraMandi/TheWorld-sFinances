@@ -57,7 +57,7 @@ const Layout = () => {
             <Route element={<h1>Not found!</h1>} />
             <Route element={<h1>Not found!</h1>} /><Route element={<h1>Not found!</h1>} />
           </Routes>
-          {store.displayOffNews ? null : <NewsCards/>}
+          {store.displayNews ? <NewsCards/> : null}
            {/* <NewsCards/> */}
         </ScrollToTop>
       </BrowserRouter>

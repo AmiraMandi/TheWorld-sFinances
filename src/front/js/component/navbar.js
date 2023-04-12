@@ -18,6 +18,8 @@ export const Navbar1 = () => {
 
   const logout =()=>{
     localStorage.clear()
+    actions.displayOffNews()
+    actions.displayOffReadMe()
     window.location.reload()
 }
   return (

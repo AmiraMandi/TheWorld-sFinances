@@ -121,6 +121,8 @@ const getState = ({
 
                         setStore({
                             token: data.token,
+                            displayNews: true,
+                            displayReadMe: true,
                         });
 
                         const userToken = JSON.stringify(data.token);

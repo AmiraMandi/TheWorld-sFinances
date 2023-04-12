@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState, useContext, useEffect, useSyncExternalStore } from "react";
 import {Form, Button, FormGroup, FormLabel} from 'react-bootstrap';
+import { Context } from "../store/appContext";
+
+
 
 export const Advertisers =() => {
+  const { store, actions } = useContext(Context);
+
+  useEffect(()=>{
+    actions.displayOffNews();
+    
+   },[])
+  
   return ( 
     <div className='container'>
        <Form>

@@ -9,7 +9,7 @@ import { Context } from "../store/appContext";
 
 export const Login = () => {
   const { store, actions } = useContext(Context);
- 
+  // actions.displayOff(true);
   /* Utilizo useState donde asigno valores de los input*/
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +24,7 @@ export const Login = () => {
     if (email !== "" && password !== "") {
       console.log("Hola")
       actions.login(email, password);
-      
+
     } else {
       actions.notify("Fill in all fields");
       console.log(password);
@@ -37,21 +37,12 @@ export const Login = () => {
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email)
           localStorage.setItem("email",data.user.email)
-          
-          
       })
-      actions.displayOnNews();
-      actions.displayOnReadMe();
   }
 
   useEffect(()=>{
       setValue(localStorage.getItem('email'))
   })
-
-  useEffect(()=>{
-   actions.displayOffNews();
-   actions.displayOffReadMe();
-  },[])
 
   return (
     <>

@@ -25,6 +25,7 @@ import '../styles/footer.css'
 import {DecentralizedFinances} from "./pages/Decentralized Finance.jsx"
 import { Crypto } from "./pages/cryptoview.jsx";
 import {Suggestion} from './pages/suggestionbox.jsx'
+import {Mod} from "./component/mod.jsx";
 //create your first component
 const Layout = () => {
   const { store, actions } = useContext(Context);
@@ -39,6 +40,7 @@ const Layout = () => {
         <ScrollToTop>
         <Brand  />
         <Navbar1 />
+        <Mod/>
           <Routes>
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />

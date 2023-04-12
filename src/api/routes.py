@@ -421,6 +421,7 @@ def update_advertiser(id):
             advertiser.user_id = data.get('user_id', advertiser.user_id)
             advertiser.name = data.get('name', advertiser.name)
             advertiser.last_name = data.get('last_name', advertiser.last_name)
+            advertiser.email = data.get('email', advertiser.email)
             advertiser.company = data.get('company', advertiser.company)
             advertiser.company_address = data.get('company_address', advertiser.company_address)
             advertiser.CIF_NIF = data.get('CIF_NIF', advertiser.CIF_NIF)
@@ -546,7 +547,7 @@ def recuperarPassword():
 # Mediastack GET
 @api.route('/newsmediastack', methods=['GET'])
 def get_newsmediastack():
-    url = 'http://api.mediastack.com/v1/news?access_key=4a32d807e8f096e6c57661d4576ea097'
+    # url = 'http://api.mediastack.com/v1/news?access_key=4a32d807e8f096e6c57661d4576ea097'
     category = request.args.get('category', default='business')
     keywords = request.args.get('keywords', default='')
     print("las categorias", category)
@@ -579,10 +580,10 @@ def get_newsmediastack():
 @api.route('/suggestions', methods=['POST'])
 def create_suggestion():
     data = request.get_json()
-    new_suggestion = SuggestionBox(fullName=data['fullName'], email=data['email'], Suggestion=data['Suggestion'])
+    new_suggestion = SuggestionBox(fullName=data['fullName'], email=data['email'], suggestion=data['suggestion'])
     db.session.add(new_suggestion)
     db.session.commit()
-    return jsonify(new_suggestion.serialize()), 201
+    return jsonify(new_suggestion.serialize()), 200
 
 # READ ALL
 @api.route('/suggestions', methods=['GET'])

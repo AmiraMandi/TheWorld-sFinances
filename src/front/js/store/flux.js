@@ -68,7 +68,10 @@ const getState = ({
                             registro: true,
                         });
                     }
-
+                    // const data = await response.json();
+                    // setStore({
+                    //     registro: false,
+                    // });
                 } catch (error) {
                     console.log(error);
                     setStore({
@@ -79,7 +82,7 @@ const getState = ({
 
 
             getNews: async (keywords) => {
-
+                //To-DO: Definir dentro del requestOptions un body donde pueda pasar un parámetro "category" que vaya a recibir el back. Si no recibe ninguno, enviarlo vacío o por default(general)
                 let requestOptions = {
                     method: "GET",
                     redirect: "follow",
@@ -118,8 +121,19 @@ const getState = ({
                         options
                     );
                     if (resp.status === 200) {
-
+                        // setStore({
+                        //     auth: true,
+                        // });
                         const data = await resp.json();
+                        // sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+
+                        // setStore({
+                        //     userInfo: data.user_info,
+                        // });
+
+                        // const userInfoStrfy = JSON.stringify(getStore().userInfo);
+                        // localStorage.setItem("userInfo", userInfoStrfy);
+                        // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
 
                         setStore({
                             token: data.token,
@@ -161,10 +175,9 @@ const getState = ({
     };
 };
 
+// fetch suggestionbox
 
-           // fetch suggestionbox
 
-            
-            
+
 
 export default getState;

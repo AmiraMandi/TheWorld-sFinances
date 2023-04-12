@@ -7,9 +7,8 @@ export const Suggestion = () => {
 
     useEffect(()=>{
     actions.displayOffNews();
-    
-   },[])
 
+   },[])
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [suggestion, setSuggestion] = useState("");

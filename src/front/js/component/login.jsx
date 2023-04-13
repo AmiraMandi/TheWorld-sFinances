@@ -55,7 +55,7 @@ export const Login = () => {
   return (
     <>
       {store.token ? (
-        <Navigate to={"/home"} />
+        <Navigate to={"/"} />
       ) : (
         <div className="min-vh-100 container-principal-login">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
@@ -97,9 +97,7 @@ export const Login = () => {
               </div>
             </form>
           </div>
-          {/* <div>
-            Alert component <Alert /> 
-           </div> */}
+         
         </div>
       )}
     </>

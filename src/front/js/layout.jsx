@@ -25,6 +25,7 @@ import '../styles/footer.css'
 import {DecentralizedFinances} from "./pages/Decentralized Finance.jsx"
 import { Crypto } from "./pages/cryptoview.jsx";
 import {Suggestion} from './pages/suggestionbox.jsx'
+import { Root } from "./pages/root.js";
 //create your first component
 const Layout = () => {
   const { store, actions } = useContext(Context);
@@ -40,6 +41,7 @@ const Layout = () => {
         <Brand  />
         <Navbar1 />
           <Routes>
+            <Route element={<Root />} path="/" />
             <Route element={<Home />} path="/home" />
             <Route element={<Login />} path="/login" />
             <Route element={<RecuperacionPassword />} path="/passwordRecovery" />

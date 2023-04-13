@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link,NavLink } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { Context } from "../store/appContext";
 import "../../styles/Navbar.css"
@@ -191,10 +191,9 @@ export const Navbar1 = () => {
           {store.isLogin ? (
               <button className="btn btn-darck text-white" onClick={logout}>Logout</button>)
                           :(
-              <Link to="/login">
-                  <Button variant="dark" className="sing-in">Sign In
-                  </Button>
-              </Link>
+              <NavLink to="/login">
+                  <button className="btn btn-darck text-white" >Sign In</button>
+              </NavLink>
             )}
           <div>
         </div>

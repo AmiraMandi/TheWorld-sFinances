@@ -23,7 +23,7 @@ export const NewsCards = ({title}) => {
                 {store.displayReadMe ?  
                     <Button variant="info" href={article.url} target="_blank">Read more</Button> :
                     <Link to="/login">
-                    <Button variant="warning">Register to read more</Button>
+                    <Button variant="warning">Login to read more</Button>
                     </Link>
                     
                 }

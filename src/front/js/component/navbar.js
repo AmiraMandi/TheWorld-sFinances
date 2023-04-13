@@ -18,9 +18,11 @@ export const Navbar1 = () => {
 
   const logout =()=>{
     localStorage.clear()
-    actions.displayOffNews()
+    actions.displayOnNews()
     actions.displayOffReadMe()
+    actions.isLoginFalse()
     window.location.reload()
+
 }
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
@@ -186,14 +188,15 @@ export const Navbar1 = () => {
             </li>
             
           </ul>
-          <Link to="/login">
-            <Button variant="dark" className="sing-in">Sign In
-            </Button>
-          </Link>
-          <button className="btn btn-darck text-white" onClick={logout}>Logout</button>
+          {store.isLogin ? (
+              <button className="btn btn-darck text-white" onClick={logout}>Logout</button>)
+                          :(
+              <Link to="/login">
+                  <Button variant="dark" className="sing-in">Sign In
+                  </Button>
+              </Link>
+            )}
           <div>
-
-            
         </div>
     
         </div>

@@ -38,10 +38,14 @@ export const Login = () => {
 
   const [value,setValue] = useState('')
   const handleGoogleSignIn =()=>{
+
       signInWithPopup(auth,provider).then((data)=>{
           setValue(data.user.email)
           localStorage.setItem("email",data.user.email)
       })
+      actions.displayOnNews();
+      actions.displayOnReadMe();
+      actions.isLoginTrue();
   }
 
   useEffect(()=>{

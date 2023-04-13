@@ -24,6 +24,7 @@ const getState = ({
             token: null,
             displayNews: true,
             displayReadMe: false,
+            isLogin: false,
         },
         actions: {
             displayOffNews: () => {
@@ -46,6 +47,17 @@ const getState = ({
                     displayReadMe: true,
                 });
             },
+            isLoginTrue: () => {
+                setStore({
+                    isLogin: true,
+                });
+            },
+            isLoginFalse: () => {
+                setStore({
+                    isLogin: false,
+                });
+            },
+
             registro: async (email, password) => {
                 const options = {
                     method: "POST",
@@ -139,6 +151,7 @@ const getState = ({
                             token: data.token,
                             displayNews: true,
                             displayReadMe: true,
+                            isLogin: true,
                         });
 
                         const userToken = JSON.stringify(data.token);

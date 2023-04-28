@@ -14,7 +14,7 @@ on:
         type: string
 
 env:
-  DEPLOYMENT_FOLDER: public
+  DEPLOYMENT_FOLDER: ./
 
 jobs:
 # Please do not rename this job
@@ -34,11 +34,16 @@ jobs:
 
       - name: Build Node assets
         env:
+          APIKEY: AIzaSyAHJf53CveGTu7ospOriAF-gTe2ovPPGw8
+          APPID: 1:381591223100:web:b1caa1dc910fa2c50afc39
+          AUTHDOMAIN: the-world-s-finances.firebaseapp.com
           CI: true
+          MEASUREMENTID: G-BF3MCS640J
+          MESSAGINGSENDERID: 381591223100
+          PROJECTID: the-world-s-finances
           SITE_URL: ${{ inputs.site-url }}
-        run: |
-          npm ci
-          npm run build
+          STORAGEBUCKET: the-world-s-finances.appspot.com
+        run: npm run build
 
 # Please do not touch the following action
       - name: Store deployment content
@@ -46,7 +51,7 @@ jobs:
         with:
           api-key: ${{ secrets.IONOS_API_KEY }}
           service-host: api-eu.ionos.space
-          project-id: 6cdebf59-8bd0-4071-bc93-831d4fd3135f
+          project-id: fbc4ed14-41f6-4954-a3c5-bae6b517fc97
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: ${{ env.DEPLOYMENT_FOLDER }}

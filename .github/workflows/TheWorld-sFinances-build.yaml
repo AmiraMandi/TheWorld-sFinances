@@ -34,16 +34,21 @@ jobs:
 
       - name: Build Node assets
         env:
-          APIKEY: AIzaSyAHJf53CveGTu7ospOriAF-gTe2ovPPGw8
-          APPID: 1:381591223100:web:b1caa1dc910fa2c50afc39
-          AUTHDOMAIN: the-world-s-finances.firebaseapp.com
           CI: true
-          MEASUREMENTID: G-BF3MCS640J
-          MESSAGINGSENDERID: 381591223100
-          PROJECTID: the-world-s-finances
           SITE_URL: ${{ inputs.site-url }}
-          STORAGEBUCKET: the-world-s-finances.appspot.com
-        run: npm run build
+        run: |
+          npm install
+          npm run build
+
+      - name: Run script
+# uncomment the following lines if you want to add environment variables for this step
+#        env:
+#          MY_ENV_VAR: value-for-my-env-var
+#          MY_SECRET_ENV_VAR: ${{ secrets.MY_SECRET }} # here you can find information how to create secrets: https://docs.github.com/en/actions/security-guides/encrypted-secrets
+        run: |
+          pipenv shell
+          pipenv install
+          pipenv run start
 
 # Please do not touch the following action
       - name: Store deployment content
@@ -51,7 +56,7 @@ jobs:
         with:
           api-key: ${{ secrets.IONOS_API_KEY }}
           service-host: api-eu.ionos.space
-          project-id: fbc4ed14-41f6-4954-a3c5-bae6b517fc97
+          project-id: 37d2128c-f7eb-46ba-a240-023a439e579b
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: ${{ env.DEPLOYMENT_FOLDER }}

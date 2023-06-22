@@ -101,8 +101,8 @@ const getState = ({
                 };
 
                 fetch(
-                       
-                        `/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
+                        process.env.BACKEND_URL +
+                        `/api/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
                     )
                     .then((response) => response.json())
                     .then((result) => {

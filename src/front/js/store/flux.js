@@ -101,7 +101,7 @@ const getState = ({
                 };
 
                 fetch(
-                        process.env.MEDIASTACK_URL +
+                        process.env.BASENAME +
                         `/api/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
                     )
                     .then((response) => response.json())

@@ -102,7 +102,7 @@ const getState = ({
 
                 fetch(
                        
-                        `/api/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
+                        `/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
                     )
                     .then((response) => response.json())
                     .then((result) => {

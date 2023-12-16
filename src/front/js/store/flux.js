@@ -99,8 +99,8 @@ const getState = ({
                     method: "GET",
                     redirect: "follow",
                 };
-              const response = await  fetch(
-                        process.env.BACKEND_URL +
+               fetch(
+                        process.env.https://theworldsfinances-46bb8e1a64c7.herokuapp.com +
                         `/api/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
                     )
                     .then((response) => response.json())

@@ -99,8 +99,7 @@ const getState = ({
                     method: "GET",
                     redirect: "follow",
                 };
-
-                fetch(
+              const response = await  fetch(
                         process.env.BACKEND_URL +
                         `/api/newsmediastack${keywords ? `?keywords=${keywords}` : ""}`
                     )
